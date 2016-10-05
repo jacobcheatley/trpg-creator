@@ -1,5 +1,5 @@
 from PyQt5.QtWidgets import QDialog
-from ui.dialogs.about_dialog import Ui_AboutDialog
+from ui.dialogs.about import Ui_AboutDialog
 
 
 class AboutDialog(QDialog):

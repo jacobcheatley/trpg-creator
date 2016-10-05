@@ -1,5 +1,5 @@
 from PyQt5.QtWidgets import QDialog
-from ui.dialogs.test_dialog import Ui_TestDialog
+from ui.dialogs.test import Ui_TestDialog
 
 
 class TestDialog(QDialog):
