@@ -7,7 +7,7 @@ def exit_app():
 
 
 def one_up(directory):
-    head, tail = os.path.split(directory.path())
+    head, tail = os.path.split(directory)
     return head
 
 

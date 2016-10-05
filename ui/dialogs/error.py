@@ -19,6 +19,7 @@ class Ui_ErrorDialog(object):
         self.verticalLayout.setContentsMargins(0, 0, 0, 0)
         self.verticalLayout.setObjectName("verticalLayout")
         self.label = QtWidgets.QLabel(self.verticalLayoutWidget)
+        self.label.setAlignment(QtCore.Qt.AlignCenter)
         self.label.setObjectName("label")
         self.verticalLayout.addWidget(self.label)
         self.buttonBox = QtWidgets.QDialogButtonBox(self.verticalLayoutWidget)

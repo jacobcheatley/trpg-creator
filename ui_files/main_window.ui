@@ -6,20 +6,132 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>800</width>
-    <height>600</height>
+    <width>744</width>
+    <height>651</height>
    </rect>
+  </property>
+  <property name="sizePolicy">
+   <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+    <horstretch>0</horstretch>
+    <verstretch>0</verstretch>
+   </sizepolicy>
   </property>
   <property name="windowTitle">
    <string>TRPG Creator</string>
   </property>
-  <widget class="QWidget" name="centralwidget"/>
+  <widget class="QWidget" name="centralwidget">
+   <layout class="QGridLayout" name="gridLayout">
+    <item row="0" column="0">
+     <widget class="QSplitter" name="splitter">
+      <property name="orientation">
+       <enum>Qt::Horizontal</enum>
+      </property>
+      <property name="opaqueResize">
+       <bool>true</bool>
+      </property>
+      <widget class="QFrame" name="filesFrame">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="minimumSize">
+        <size>
+         <width>100</width>
+         <height>0</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>400</width>
+         <height>16777215</height>
+        </size>
+       </property>
+       <property name="baseSize">
+        <size>
+         <width>200</width>
+         <height>0</height>
+        </size>
+       </property>
+       <property name="frameShape">
+        <enum>QFrame::StyledPanel</enum>
+       </property>
+       <property name="frameShadow">
+        <enum>QFrame::Raised</enum>
+       </property>
+       <layout class="QVBoxLayout" name="verticalLayout">
+        <item>
+         <widget class="QLabel" name="filesLabel">
+          <property name="text">
+           <string>Files</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QTreeView" name="filesTreeView">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="minimumSize">
+           <size>
+            <width>0</width>
+            <height>0</height>
+           </size>
+          </property>
+          <property name="sizeIncrement">
+           <size>
+            <width>0</width>
+            <height>0</height>
+           </size>
+          </property>
+          <property name="baseSize">
+           <size>
+            <width>0</width>
+            <height>0</height>
+           </size>
+          </property>
+          <property name="contextMenuPolicy">
+           <enum>Qt::CustomContextMenu</enum>
+          </property>
+          <property name="sizeAdjustPolicy">
+           <enum>QAbstractScrollArea::AdjustToContents</enum>
+          </property>
+          <attribute name="headerCascadingSectionResizes">
+           <bool>false</bool>
+          </attribute>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QScrollArea" name="scrollArea">
+       <property name="widgetResizable">
+        <bool>true</bool>
+       </property>
+       <widget class="QWidget" name="scrollAreaWidgetContents_2">
+        <property name="geometry">
+         <rect>
+          <x>0</x>
+          <y>0</y>
+          <width>318</width>
+          <height>584</height>
+         </rect>
+        </property>
+       </widget>
+      </widget>
+     </widget>
+    </item>
+   </layout>
+  </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>800</width>
+     <width>744</width>
      <height>25</height>
     </rect>
    </property>
@@ -40,17 +152,9 @@
     <addaction name="actionNew"/>
     <addaction name="actionOpen"/>
     <addaction name="separator"/>
-    <addaction name="actionSave"/>
-    <addaction name="actionSaveAs"/>
     <addaction name="menuExport"/>
     <addaction name="separator"/>
     <addaction name="actionQuit"/>
-   </widget>
-   <widget class="QMenu" name="menuEdit">
-    <property name="title">
-     <string>&amp;Edit</string>
-    </property>
-    <addaction name="actionUndo"/>
    </widget>
    <widget class="QMenu" name="menuCreate">
     <property name="title">
@@ -73,8 +177,15 @@
     <addaction name="actionDocumentation"/>
     <addaction name="actionAbout"/>
    </widget>
+   <widget class="QMenu" name="menuRun">
+    <property name="title">
+     <string>&amp;Run</string>
+    </property>
+    <addaction name="actionStandard"/>
+    <addaction name="actionDebug"/>
+   </widget>
    <addaction name="menuFile"/>
-   <addaction name="menuEdit"/>
+   <addaction name="menuRun"/>
    <addaction name="menuCreate"/>
    <addaction name="menuTools"/>
    <addaction name="menuHelp"/>
@@ -86,22 +197,6 @@
    </property>
    <property name="shortcut">
     <string>Ctrl+N</string>
-   </property>
-  </action>
-  <action name="actionSave">
-   <property name="text">
-    <string>&amp;Save</string>
-   </property>
-   <property name="shortcut">
-    <string>Ctrl+S</string>
-   </property>
-  </action>
-  <action name="actionSaveAs">
-   <property name="text">
-    <string>Save &amp;As...</string>
-   </property>
-   <property name="shortcut">
-    <string>Ctrl+Shift+S</string>
    </property>
   </action>
   <action name="actionOpen">
@@ -181,6 +276,22 @@
    </property>
    <property name="shortcut">
     <string>Ctrl+Z</string>
+   </property>
+  </action>
+  <action name="actionStandard">
+   <property name="text">
+    <string>&amp;Standard</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+R</string>
+   </property>
+  </action>
+  <action name="actionDebug">
+   <property name="text">
+    <string>&amp;Debug</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Shift+R</string>
    </property>
   </action>
  </widget>
