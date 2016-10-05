@@ -59,7 +59,7 @@ class MainWindow(QMainWindow):
         if ext == resource.info.ext:
             return lambda: self.show_campaign_info_dialog(file_path)
         else:
-            return lambda: helper.display_error('Operation not implemented for ' + file_path)
+            return lambda: helper.display_error('Operation not implemented yet.')
 
     def custom_tree_double_click(self, event):
         point = event.pos()
@@ -67,9 +67,11 @@ class MainWindow(QMainWindow):
         if index.isValid():
             item_name = self.model.itemData(index)[0]
             if '.' in item_name:
-                # It's a file
+                # It's a file. Edit it.
                 name, ext = os.path.splitext(item_name)
                 self.file_edit_function(ext, self.model.filePath(index))()
+            else:
+                self.ui.filesTreeView.expand(index)
 
     def custom_tree_menu(self, point):
         index = self.ui.filesTreeView.indexAt(point)
@@ -80,7 +82,7 @@ class MainWindow(QMainWindow):
                 name, ext = os.path.splitext(item_name)
                 menu = context_menus.build(
                     ('Edit ' + name, self.file_edit_function(ext, self.model.filePath(index))),
-                    ('Delete ' + name, lambda: print('DELETE RESOURCE'))
+                    ('Delete ' + name, lambda: helper.display_error('Operation not implemented yet.'))
                 )
                 menu.exec_(self.ui.filesTreeView.mapToGlobal(point))
             else:
