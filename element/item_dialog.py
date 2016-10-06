@@ -1,6 +1,7 @@
 from ui.dialogs.item import Ui_ItemDialog
 from misc import helper
 from element.ignore_enter import IgnoreEnter
+from element.confirm_dialog import ConfirmDialog
 
 
 class ItemDialog(IgnoreEnter):
@@ -9,7 +10,7 @@ class ItemDialog(IgnoreEnter):
         self.ui = Ui_ItemDialog()
         self.ui.setupUi(self)
         self.ui.buttonBox.accepted.connect(lambda: self.done(1))
-        self.ui.buttonBox.rejected.connect(lambda: self.done(0))
+        self.ui.buttonBox.rejected.connect(ConfirmDialog.confirm_exit(self, 'Are you sure you want to exit without saving this item?'))
 
     def get_data(self):
         return {

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'ui_files/dialogs/other_stat_row.ui'
+# Form implementation generated from reading ui file 'ui_files/widgets/other_stat_row.ui'
 #
 # Created by: PyQt5 UI code generator 5.5.1
 #

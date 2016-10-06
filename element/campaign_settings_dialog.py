@@ -3,6 +3,7 @@ from ui.dialogs.campaign_settings import Ui_CampaignSettingsDialog
 from element.inv_row_widget import InvRow
 from PyQt5.QtWidgets import QListWidgetItem
 from misc import helper
+from element.confirm_dialog import ConfirmDialog
 
 
 class CampaignSettingsDialog(IgnoreEnter):
@@ -13,7 +14,7 @@ class CampaignSettingsDialog(IgnoreEnter):
 
         # Connections
         self.ui.buttonBox.accepted.connect(lambda: self.done(1))
-        self.ui.buttonBox.rejected.connect(lambda: self.done(0))
+        self.ui.buttonBox.rejected.connect(ConfirmDialog.confirm_exit(self, 'Are you sure you want to exit without saving the campaign settings?'))
         self.ui.standardInventoryAdd.clicked.connect(
             lambda: self.add_inventory_item(self.ui.standardInventoryList, '', 1)
         )
@@ -32,6 +33,7 @@ class CampaignSettingsDialog(IgnoreEnter):
 
         for name, count in standard_player_data['inventory']['items'].items():
             self.add_inventory_item(self.ui.standardInventoryList, name, count)
+        self.ui.standardCurrency.setValue(standard_player_data['inventory']['currency'])
         self.ui.standardStarting.setText(standard_player_data['scenario'])
         # TODO: Stats
         # TODO: Globals
@@ -42,6 +44,7 @@ class CampaignSettingsDialog(IgnoreEnter):
 
         for name, count in debug_player_data['inventory']['items'].items():
             self.add_inventory_item(self.ui.debugInventoryList, name, count)
+        self.ui.debugCurrency.setValue(debug_player_data['inventory']['currency'])
         self.ui.debugStarting.setText(debug_player_data['scenario'])
         # TODO: Stats
         # TODO: Globals
@@ -65,7 +68,7 @@ class CampaignSettingsDialog(IgnoreEnter):
         helper.save_json_data(self.settings_dir + '/std/player.json', {
             'scenario': standard_start,
             'inventory': {
-                'currency': 0,
+                'currency': self.ui.standardCurrency.value(),
                 'items': standard_items
             },
             'stats': {}
@@ -80,7 +83,7 @@ class CampaignSettingsDialog(IgnoreEnter):
         helper.save_json_data(self.settings_dir + '/debug/player.json', {
             'scenario': debug_start,
             'inventory': {
-                'currency': 0,
+                'currency': self.ui.debugCurrency.value(),
                 'items': debug_items
             },
             'stats': {}

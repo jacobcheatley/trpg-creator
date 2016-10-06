@@ -1,11 +1,10 @@
 import os
 import sys
 
-from PyQt5.QtCore import QDir, QUrl
+from PyQt5.QtCore import QDir, QUrl, QFile
 from PyQt5.QtGui import QDesktopServices
 from PyQt5.QtWidgets import QMainWindow, QApplication, QFileDialog, QFileSystemModel
 from ui.main_window import Ui_MainWindow
-
 
 from element import context_menus
 from element.about_dialog import AboutDialog
@@ -13,6 +12,7 @@ from element.campaign_info_dialog import CampaignInfoDialog
 from element.item_dialog import ItemDialog
 from element.create_resource_dialog import CreateResourceDialog
 from element.campaign_settings_dialog import CampaignSettingsDialog
+from element.confirm_dialog import ConfirmDialog
 
 from misc import helper, resource
 import config
@@ -81,8 +81,38 @@ class MainWindow(QMainWindow):
             else:
                 print('Resource creation cancelled')
 
-        # TODO: Additional/better checks here for duplicate files or empty name
+        # TODO: Additional/better checks here for duplicate files
         return create_resource
+
+    @staticmethod
+    def file_delete_function(file_location):
+        def delete_folder():
+            if ConfirmDialog.yes_to('Are you sure you want to delete this file?'):
+                QFile(file_location).remove()
+
+        return delete_folder
+
+    @staticmethod
+    def folder_create_function(folder_location):
+        def create_folder():
+            new_id = CreateResourceDialog.get_new_id('folder')
+            if new_id is not None and new_id.strip() != '':
+                qdir = QDir(folder_location)
+                qdir.mkpath('./' + new_id)
+            else:
+                print('Resource creation cancelled')
+
+        # TODO: Additional/better checks here for duplicate folders
+        return create_folder
+
+    @staticmethod
+    def folder_delete_function(folder_location):
+        def delete_folder():
+            qdir = QDir(folder_location)
+            if ConfirmDialog.yes_to('Are you sure you want to delete this folder?'):
+                qdir.removeRecursively()
+
+        return delete_folder
 
     def custom_tree_double_click(self, event):
         point = event.pos()
@@ -104,23 +134,40 @@ class MainWindow(QMainWindow):
             if '.' in item_name:
                 # It's a file
                 name, ext = os.path.splitext(item_name)
-                menu = context_menus.build(
-                    ('Edit ' + name, self.file_edit_function(ext, self.model.filePath(index))),
-                    ('Delete ' + name, lambda: helper.display_error('Operation not implemented yet.'))
-                )
+                menu_actions = [
+                    ('Edit ' + name, self.file_edit_function(ext, self.model.filePath(index)))
+                ]
+                resource_object = resource.ext_to_object[ext]
+                if resource_object.delete:
+                    menu_actions.append(
+                        ('Delete ' + name, self.file_delete_function(self.model.filePath(index))))
+                menu = context_menus.build(menu_actions)
                 menu.exec_(self.ui.filesTreeView.mapToGlobal(point))
             else:
                 # It's a folder
                 start_index = index
                 # Get the root
-                while item_name not in resource.folder_to_name:
-                    index = index.parent()
-                    item_name = self.model.itemData(index)[0]
-                menu = context_menus.build(
-                    ('Create new ' + resource.folder_to_name[item_name], self.file_create_function(item_name, self.model.filePath(start_index))),
-                    ('Create new folder', lambda: helper.display_error('Operation not implemented yet.'))
-                )
-                menu.exec_(self.ui.filesTreeView.mapToGlobal(point))
+                if item_name not in resource.folder_to_name:
+                    root = False
+                    while item_name not in resource.folder_to_name:
+                        index = index.parent()
+                        item_name = self.model.itemData(index)[0]
+                else:
+                    root = True
+                menu_actions = []
+                resource_object = resource.folder_to_object[item_name]
+                if resource_object.create:
+                    menu_actions.append(('Create new ' + resource.folder_to_name[item_name],
+                                         self.file_create_function(item_name, self.model.filePath(start_index))))
+                if resource_object.subfolder:
+                    menu_actions.append(('Create new folder',
+                                         self.folder_create_function(self.model.filePath(start_index))))
+                if not root:
+                    menu_actions.append(('Delete folder',
+                                         self.folder_delete_function(self.model.filePath(start_index))))
+                if menu_actions:
+                    menu = context_menus.build(menu_actions)
+                    menu.exec_(self.ui.filesTreeView.mapToGlobal(point))
     # </editor-fold>
 
     # Actions
@@ -143,6 +190,9 @@ class MainWindow(QMainWindow):
                     self.current_dir = qdir.path()
                     for folder_name in resource.folders:
                         qdir.mkpath('./' + folder_name)
+                    helper.save_json_data('{}/{}/health{}'.format(self.current_dir, resource.health_stat.folder,
+                                                                  resource.health_stat.ext),
+                                          resource.health_stat.default)
                     qdir.mkpath('./.settings/std')
                     qdir.mkpath('./.settings/debug')
                     resource.create_config_files(self.current_dir + '/.settings')
@@ -153,7 +203,7 @@ class MainWindow(QMainWindow):
             else:
                 helper.display_error('Directory for campaign already exists.')  # This shouldn't happen
         else:
-            print('Not saved.')
+            print('Not created.')
 
     def open_campaign(self):
         dialog = QFileDialog(self)
@@ -184,6 +234,7 @@ class MainWindow(QMainWindow):
     def save_campaign_info(self, campaign_info):
         config.set('default_creator', campaign_info['creator'])
         helper.save_json_data(self.current_dir + '/campaign.info', campaign_info)
+
     # </editor-fold>
 
     # <editor-fold desc="Item Dialog">
@@ -192,6 +243,7 @@ class MainWindow(QMainWindow):
         dialog = ItemDialog.setup(file_location)
         if dialog.exec_():
             helper.save_json_data(file_location, dialog.get_data())
+
     # </editor-fold>
 
     # <editor-fold desc="Campaign Settings Dialog">
@@ -202,6 +254,7 @@ class MainWindow(QMainWindow):
             dialog.save_data()
         else:
             print('NUK G')
+
     # </editor-fold>
 
     # Properties

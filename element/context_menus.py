@@ -1,7 +1,7 @@
 from PyQt5.QtWidgets import QMenu
 
 
-def build(*actions):
+def build(actions):
     result = QMenu()
     for action in actions:
         label, function = action
