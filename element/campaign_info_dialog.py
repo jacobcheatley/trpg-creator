@@ -1,8 +1,8 @@
-from PyQt5.QtWidgets import QDialog
+from element.ignore_enter import IgnoreEnter
 from ui.dialogs.campaign_info import Ui_CampaignInfoDialog
 
 
-class CampaignInfoDialog(QDialog):
+class CampaignInfoDialog(IgnoreEnter):
     def __init__(self):
         super().__init__()
         self.ui = Ui_CampaignInfoDialog()
@@ -10,9 +10,17 @@ class CampaignInfoDialog(QDialog):
         self.ui.buttonBox.accepted.connect(lambda: self.done(1))
         self.ui.buttonBox.rejected.connect(lambda: self.done(0))
 
-    def getData(self):
+    def get_data(self):
         return {
             'name': str(self.ui.lineEditCampaign.text()),
             'creator': str(self.ui.lineEditCreator.text()),
             'about': str(self.ui.textEditAbout.toPlainText())
         }
+
+    @classmethod
+    def setup(cls, name, creator, about):  # Method signature different from other setups because of first time popup
+        dialog = CampaignInfoDialog()
+        dialog.ui.lineEditCampaign.setText(name)
+        dialog.ui.lineEditCreator.setText(creator)
+        dialog.ui.textEditAbout.setPlainText(about)
+        return dialog

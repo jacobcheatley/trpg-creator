@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'ui_files/dialogs/error.ui'
 #
-# Created by: PyQt5 UI code generator 5.7
+# Created by: PyQt5 UI code generator 5.5.1
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -16,7 +16,6 @@ class Ui_ErrorDialog(object):
         self.verticalLayoutWidget.setGeometry(QtCore.QRect(10, 10, 381, 131))
         self.verticalLayoutWidget.setObjectName("verticalLayoutWidget")
         self.verticalLayout = QtWidgets.QVBoxLayout(self.verticalLayoutWidget)
-        self.verticalLayout.setContentsMargins(0, 0, 0, 0)
         self.verticalLayout.setObjectName("verticalLayout")
         self.label = QtWidgets.QLabel(self.verticalLayoutWidget)
         self.label.setAlignment(QtCore.Qt.AlignCenter)

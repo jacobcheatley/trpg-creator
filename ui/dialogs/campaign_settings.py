@@ -1,0 +1,90 @@
+# -*- coding: utf-8 -*-
+
+# Form implementation generated from reading ui file 'ui_files/dialogs/campaign_settings.ui'
+#
+# Created by: PyQt5 UI code generator 5.5.1
+#
+# WARNING! All changes made in this file will be lost!
+
+from PyQt5 import QtCore, QtGui, QtWidgets
+
+class Ui_Dialog(object):
+    def setupUi(self, Dialog):
+        Dialog.setObjectName("Dialog")
+        Dialog.resize(885, 630)
+        self.verticalLayout = QtWidgets.QVBoxLayout(Dialog)
+        self.verticalLayout.setObjectName("verticalLayout")
+        self.tabWidget = QtWidgets.QTabWidget(Dialog)
+        self.tabWidget.setObjectName("tabWidget")
+        self.tabGlobals = QtWidgets.QWidget()
+        self.tabGlobals.setObjectName("tabGlobals")
+        self.gridLayout = QtWidgets.QGridLayout(self.tabGlobals)
+        self.gridLayout.setObjectName("gridLayout")
+        self.tabWidget_2 = QtWidgets.QTabWidget(self.tabGlobals)
+        self.tabWidget_2.setObjectName("tabWidget_2")
+        self.tabStandard = QtWidgets.QWidget()
+        self.tabStandard.setObjectName("tabStandard")
+        self.tabWidget_2.addTab(self.tabStandard, "")
+        self.tabDebug = QtWidgets.QWidget()
+        self.tabDebug.setObjectName("tabDebug")
+        self.tabWidget_2.addTab(self.tabDebug, "")
+        self.gridLayout.addWidget(self.tabWidget_2, 0, 0, 1, 1)
+        self.tabWidget.addTab(self.tabGlobals, "")
+        self.tabPlayer = QtWidgets.QWidget()
+        self.tabPlayer.setObjectName("tabPlayer")
+        self.gridLayout_2 = QtWidgets.QGridLayout(self.tabPlayer)
+        self.gridLayout_2.setObjectName("gridLayout_2")
+        self.tabWidget_3 = QtWidgets.QTabWidget(self.tabPlayer)
+        self.tabWidget_3.setObjectName("tabWidget_3")
+        self.tabStandard1 = QtWidgets.QWidget()
+        self.tabStandard1.setObjectName("tabStandard1")
+        self.tabWidget_3.addTab(self.tabStandard1, "")
+        self.tabDebug1 = QtWidgets.QWidget()
+        self.tabDebug1.setObjectName("tabDebug1")
+        self.tabWidget_3.addTab(self.tabDebug1, "")
+        self.gridLayout_2.addWidget(self.tabWidget_3, 0, 0, 1, 1)
+        self.tabWidget.addTab(self.tabPlayer, "")
+        self.tabDescriptions = QtWidgets.QWidget()
+        self.tabDescriptions.setObjectName("tabDescriptions")
+        self.gridLayout_3 = QtWidgets.QGridLayout(self.tabDescriptions)
+        self.gridLayout_3.setObjectName("gridLayout_3")
+        self.tabWidget_4 = QtWidgets.QTabWidget(self.tabDescriptions)
+        self.tabWidget_4.setObjectName("tabWidget_4")
+        self.tabStats = QtWidgets.QWidget()
+        self.tabStats.setObjectName("tabStats")
+        self.tabWidget_4.addTab(self.tabStats, "")
+        self.tabCurrency = QtWidgets.QWidget()
+        self.tabCurrency.setObjectName("tabCurrency")
+        self.tabWidget_4.addTab(self.tabCurrency, "")
+        self.tabCommands = QtWidgets.QWidget()
+        self.tabCommands.setObjectName("tabCommands")
+        self.tabWidget_4.addTab(self.tabCommands, "")
+        self.gridLayout_3.addWidget(self.tabWidget_4, 0, 0, 1, 1)
+        self.tabWidget.addTab(self.tabDescriptions, "")
+        self.verticalLayout.addWidget(self.tabWidget)
+        self.buttonBox = QtWidgets.QDialogButtonBox(Dialog)
+        self.buttonBox.setStandardButtons(QtWidgets.QDialogButtonBox.Cancel|QtWidgets.QDialogButtonBox.Ok)
+        self.buttonBox.setObjectName("buttonBox")
+        self.verticalLayout.addWidget(self.buttonBox)
+
+        self.retranslateUi(Dialog)
+        self.tabWidget.setCurrentIndex(0)
+        self.tabWidget_2.setCurrentIndex(0)
+        self.tabWidget_3.setCurrentIndex(0)
+        self.tabWidget_4.setCurrentIndex(2)
+        QtCore.QMetaObject.connectSlotsByName(Dialog)
+
+    def retranslateUi(self, Dialog):
+        _translate = QtCore.QCoreApplication.translate
+        Dialog.setWindowTitle(_translate("Dialog", "Campaign Settings"))
+        self.tabWidget_2.setTabText(self.tabWidget_2.indexOf(self.tabStandard), _translate("Dialog", "Standard"))
+        self.tabWidget_2.setTabText(self.tabWidget_2.indexOf(self.tabDebug), _translate("Dialog", "Debug"))
+        self.tabWidget.setTabText(self.tabWidget.indexOf(self.tabGlobals), _translate("Dialog", "Globals"))
+        self.tabWidget_3.setTabText(self.tabWidget_3.indexOf(self.tabStandard1), _translate("Dialog", "Standard"))
+        self.tabWidget_3.setTabText(self.tabWidget_3.indexOf(self.tabDebug1), _translate("Dialog", "Debug"))
+        self.tabWidget.setTabText(self.tabWidget.indexOf(self.tabPlayer), _translate("Dialog", "Player"))
+        self.tabWidget_4.setTabText(self.tabWidget_4.indexOf(self.tabStats), _translate("Dialog", "Stats"))
+        self.tabWidget_4.setTabText(self.tabWidget_4.indexOf(self.tabCurrency), _translate("Dialog", "Currency"))
+        self.tabWidget_4.setTabText(self.tabWidget_4.indexOf(self.tabCommands), _translate("Dialog", "Commands"))
+        self.tabWidget.setTabText(self.tabWidget.indexOf(self.tabDescriptions), _translate("Dialog", "Descriptions"))
+

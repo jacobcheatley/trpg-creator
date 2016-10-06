@@ -1,19 +1,20 @@
-# Qt Standard Imports
-import json
 import os
 import sys
 
 from PyQt5.QtCore import QDir, QUrl
 from PyQt5.QtGui import QDesktopServices
 from PyQt5.QtWidgets import QMainWindow, QApplication, QFileDialog, QFileSystemModel
+from ui.main_window import Ui_MainWindow
 
-import config
+
 from element import context_menus
 from element.about_dialog import AboutDialog
 from element.campaign_info_dialog import CampaignInfoDialog
-from misc import helper, resource
-from ui.main_window import Ui_MainWindow
+from element.item_dialog import ItemDialog
+from element.create_resource_dialog import CreateResourceDialog
 
+from misc import helper, resource
+import config
 
 class MainWindow(QMainWindow):
     def __init__(self):
@@ -55,11 +56,27 @@ class MainWindow(QMainWindow):
         for x in range(1, 4):
             self.ui.filesTreeView.hideColumn(x)  # TODO: Find a way to only have to do this once
 
-    def file_edit_function(self, ext, file_path):
+    def file_edit_function(self, ext, file_location):
         if ext == resource.info.ext:
-            return lambda: self.show_campaign_info_dialog(file_path)
+            return lambda: self.show_campaign_info_dialog(file_location)
+        elif ext == resource.item.ext:
+            return lambda: self.show_item_dialog(file_location)
         else:
             return lambda: helper.display_error('Operation not implemented yet.')
+
+    def file_create_function(self, base_folder, file_location):
+        resource_type = resource.folder_to_name[base_folder]
+
+        def create_resource():
+            new_id = CreateResourceDialog.get_new_id(resource_type)
+            if new_id is not None and new_id.strip() != '':
+                helper.save_json_data(file_location + '/' + new_id + resource.folder_to_ext[base_folder],
+                                      resource.name_to_default[resource_type])
+            else:
+                print('Resource creation cancelled')
+
+        # TODO: Additional/better checks here for duplicate files or empty name
+        return create_resource
 
     def custom_tree_double_click(self, event):
         point = event.pos()
@@ -71,6 +88,7 @@ class MainWindow(QMainWindow):
                 name, ext = os.path.splitext(item_name)
                 self.file_edit_function(ext, self.model.filePath(index))()
             else:
+                # It's a directory. Expand it.
                 self.ui.filesTreeView.expand(index)
 
     def custom_tree_menu(self, point):
@@ -93,8 +111,8 @@ class MainWindow(QMainWindow):
                     index = index.parent()
                     item_name = self.model.itemData(index)[0]
                 menu = context_menus.build(
-                    ('Create new ' + resource.folder_to_name[item_name], lambda: print('CREATE RESOURCE')),
-                    ('Create new folder', lambda: print('CREATE FOLDER'))
+                    ('Create new ' + resource.folder_to_name[item_name], self.file_create_function(item_name, self.model.filePath(start_index))),
+                    ('Create new folder', lambda: helper.display_error('Operation not implemented yet.'))
                 )
                 menu.exec_(self.ui.filesTreeView.mapToGlobal(point))
     # </editor-fold>
@@ -106,6 +124,7 @@ class MainWindow(QMainWindow):
         dialog.setAcceptMode(QFileDialog.AcceptSave)
         dialog.setFileMode(QFileDialog.AnyFile)
         dialog.setOption(QFileDialog.ShowDirsOnly)
+        dialog.setWindowTitle('Select folder name')
         if dialog.exec_():
             directory = dialog.selectedFiles()[0]
             qdir = QDir(directory)
@@ -142,32 +161,29 @@ class MainWindow(QMainWindow):
         QDesktopServices.openUrl(QUrl(self.current_dir))
 
     # <editor-fold desc="Campaign Info Dialog">
-    @staticmethod
-    def setup_campaign_info_dialog(name, creator, about):
-        dialog = CampaignInfoDialog()
-        dialog.ui.lineEditCampaign.setText(name)
-        dialog.ui.lineEditCreator.setText(creator)
-        dialog.ui.textEditAbout.setPlainText(about)
-        return dialog
-
     def init_campaign_info_dialog(self, name, creator, about):
-        dialog = self.setup_campaign_info_dialog(name, creator, about)
+        dialog = CampaignInfoDialog.setup(name, creator, about)
         exit_code = dialog.exec_()
         if exit_code:
-            self.save_campaign_info(dialog.getData())
+            self.save_campaign_info(dialog.get_data())
         return exit_code
 
     def show_campaign_info_dialog(self, file_location):
         data = helper.get_json_data(file_location)
-        dialog = self.setup_campaign_info_dialog(data['name'], data['creator'], data['about'])
-        exit_code = dialog.exec_()
-        if exit_code:
-            self.save_campaign_info(dialog.getData())
+        dialog = CampaignInfoDialog.setup(data['name'], data['creator'], data['about'])
+        if dialog.exec_():
+            self.save_campaign_info(dialog.get_data())
 
     def save_campaign_info(self, campaign_info):
         config.set('default_creator', campaign_info['creator'])
-        with open(self.current_dir + '/campaign.info', 'w') as out:
-            json.dump(campaign_info, out)
+        helper.save_json_data(self.current_dir + '/campaign.info', campaign_info)
+    # </editor-fold>
+
+    # <editor-fold desc="Item Dialog">
+    def show_item_dialog(self, file_location):
+        dialog = ItemDialog.setup(file_location)
+        if dialog.exec_():
+            helper.save_json_data(file_location, dialog.get_data())
     # </editor-fold>
 
     # Properties

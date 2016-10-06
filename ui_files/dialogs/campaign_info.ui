@@ -22,7 +22,7 @@
      <height>241</height>
     </rect>
    </property>
-   <layout class="QVBoxLayout" name="verticalLayout_3">
+   <layout class="QVBoxLayout" name="verticalLayout">
     <item>
      <layout class="QFormLayout" name="formLayout">
       <item row="0" column="0">
@@ -66,8 +66,6 @@
     </item>
    </layout>
   </widget>
-  <zorder>verticalLayoutWidget</zorder>
-  <zorder>lineEditCampaign</zorder>
  </widget>
  <resources/>
  <connections/>

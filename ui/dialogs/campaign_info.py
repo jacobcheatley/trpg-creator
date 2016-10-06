@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'ui_files/dialogs/campaign_info.ui'
 #
-# Created by: PyQt5 UI code generator 5.7
+# Created by: PyQt5 UI code generator 5.5.1
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -15,9 +15,8 @@ class Ui_CampaignInfoDialog(object):
         self.verticalLayoutWidget = QtWidgets.QWidget(CampaignInfoDialog)
         self.verticalLayoutWidget.setGeometry(QtCore.QRect(10, 10, 381, 241))
         self.verticalLayoutWidget.setObjectName("verticalLayoutWidget")
-        self.verticalLayout_3 = QtWidgets.QVBoxLayout(self.verticalLayoutWidget)
-        self.verticalLayout_3.setContentsMargins(0, 0, 0, 0)
-        self.verticalLayout_3.setObjectName("verticalLayout_3")
+        self.verticalLayout = QtWidgets.QVBoxLayout(self.verticalLayoutWidget)
+        self.verticalLayout.setObjectName("verticalLayout")
         self.formLayout = QtWidgets.QFormLayout()
         self.formLayout.setObjectName("formLayout")
         self.label = QtWidgets.QLabel(self.verticalLayoutWidget)
@@ -38,13 +37,11 @@ class Ui_CampaignInfoDialog(object):
         self.textEditAbout = QtWidgets.QTextEdit(self.verticalLayoutWidget)
         self.textEditAbout.setObjectName("textEditAbout")
         self.formLayout.setWidget(2, QtWidgets.QFormLayout.FieldRole, self.textEditAbout)
-        self.verticalLayout_3.addLayout(self.formLayout)
+        self.verticalLayout.addLayout(self.formLayout)
         self.buttonBox = QtWidgets.QDialogButtonBox(self.verticalLayoutWidget)
         self.buttonBox.setStandardButtons(QtWidgets.QDialogButtonBox.Cancel|QtWidgets.QDialogButtonBox.Ok)
         self.buttonBox.setObjectName("buttonBox")
-        self.verticalLayout_3.addWidget(self.buttonBox)
-        self.verticalLayoutWidget.raise_()
-        self.lineEditCampaign.raise_()
+        self.verticalLayout.addWidget(self.buttonBox)
 
         self.retranslateUi(CampaignInfoDialog)
         QtCore.QMetaObject.connectSlotsByName(CampaignInfoDialog)

@@ -35,3 +35,12 @@ def show_simple_dialog(cls):
 def get_json_data(file_location):
     with open(file_location, 'r') as in_file:
         return json.load(in_file)
+
+
+def save_json_data(file_location, data):
+    with open(file_location, 'w') as out_file:
+        json.dump(data, out_file)
+
+
+def maybe(value, otherwise):
+    return value if value is not None else otherwise
