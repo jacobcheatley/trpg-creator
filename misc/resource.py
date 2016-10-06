@@ -1,3 +1,5 @@
+from misc import helper
+
 class ResourceInfo:
     def __init__(self, name, folder, ext, default):
         self.name = name
@@ -5,6 +7,7 @@ class ResourceInfo:
         self.ext = ext
         self.default = default
 
+# <editor-fold desc="Resource Info">
 ability = ResourceInfo('ability', 'Abilities', '.abil',
                        {})
 
@@ -32,7 +35,7 @@ info = ResourceInfo('info', '', '.info',
 perk = ResourceInfo('perk', 'Perks', '.perk',
                     {})
 
-scenario = ResourceInfo('scenario', 'Scenar,ios', '.scen',
+scenario = ResourceInfo('scenario', 'Scenarios', '.scen',
                         {
                             'name': '',
                             'desc': '',
@@ -53,6 +56,7 @@ all_info = [
     scenario,
     shop
 ]
+# </editor-fold>
 
 folders = map(lambda r: r.folder, all_info)
 
@@ -60,3 +64,18 @@ ext_to_name = {resource.ext: resource.name for resource in all_info}
 folder_to_name = {resource.folder: resource.name for resource in all_info}
 folder_to_ext = {resource.folder: resource.ext for resource in all_info}
 name_to_default = {resource.name: resource.default for resource in all_info}
+
+
+def create_config_files(directory):
+    player_data = {
+        'scenario': 'start',
+        'stats': {},
+        'inventory': {
+            'currency': 0,
+            'items': {}
+        }
+    }
+    helper.save_json_data(directory + '/std/player.json', player_data)
+    helper.save_json_data(directory + '/debug/player.json', player_data)
+    helper.save_json_data(directory + '/std/globals.json', {})
+    helper.save_json_data(directory + '/debug/globals.json', {})

@@ -12,9 +12,11 @@ from element.about_dialog import AboutDialog
 from element.campaign_info_dialog import CampaignInfoDialog
 from element.item_dialog import ItemDialog
 from element.create_resource_dialog import CreateResourceDialog
+from element.campaign_settings_dialog import CampaignSettingsDialog
 
 from misc import helper, resource
 import config
+
 
 class MainWindow(QMainWindow):
     def __init__(self):
@@ -30,6 +32,7 @@ class MainWindow(QMainWindow):
         self.model = QFileSystemModel()
         self.init_tree_view()
         self.connect_actions()
+        print(self.current_dir)
 
     def connect_actions(self):
         # File
@@ -38,6 +41,8 @@ class MainWindow(QMainWindow):
         self.ui.actionQuit.triggered.connect(helper.exit_app)
         # Help
         self.ui.actionAbout.triggered.connect(helper.show_simple_dialog(AboutDialog))
+        # Tools
+        self.ui.actionSettings.triggered.connect(self.show_campaign_settings_dialog)
         # Buttons
         self.ui.openFolderButton.clicked.connect(self.open_current_dir)
 
@@ -64,7 +69,8 @@ class MainWindow(QMainWindow):
         else:
             return lambda: helper.display_error('Operation not implemented yet.')
 
-    def file_create_function(self, base_folder, file_location):
+    @staticmethod
+    def file_create_function(base_folder, file_location):
         resource_type = resource.folder_to_name[base_folder]
 
         def create_resource():
@@ -131,12 +137,16 @@ class MainWindow(QMainWindow):
             if not qdir.exists():
                 name = qdir.dirName()
                 creator = config.get('default_creator')
-                confirm = self.init_campaign_info_dialog(name, creator, '')
-                if confirm:
+                campaign_info_dialog = self.init_campaign_info_dialog(name, creator, '')
+                if campaign_info_dialog.exec_():
                     # If campaign info was OK'd, set up files
                     self.current_dir = qdir.path()
                     for folder_name in resource.folders:
                         qdir.mkpath('./' + folder_name)
+                    qdir.mkpath('./.settings/std')
+                    qdir.mkpath('./.settings/debug')
+                    resource.create_config_files(self.current_dir + '/.settings')
+                    self.save_campaign_info(campaign_info_dialog.get_data())
                     self.refresh_tree_view()
                 else:
                     print('Cancelled creating campaign.')
@@ -163,10 +173,7 @@ class MainWindow(QMainWindow):
     # <editor-fold desc="Campaign Info Dialog">
     def init_campaign_info_dialog(self, name, creator, about):
         dialog = CampaignInfoDialog.setup(name, creator, about)
-        exit_code = dialog.exec_()
-        if exit_code:
-            self.save_campaign_info(dialog.get_data())
-        return exit_code
+        return dialog
 
     def show_campaign_info_dialog(self, file_location):
         data = helper.get_json_data(file_location)
@@ -180,10 +187,21 @@ class MainWindow(QMainWindow):
     # </editor-fold>
 
     # <editor-fold desc="Item Dialog">
-    def show_item_dialog(self, file_location):
+    @staticmethod
+    def show_item_dialog(file_location):
         dialog = ItemDialog.setup(file_location)
         if dialog.exec_():
             helper.save_json_data(file_location, dialog.get_data())
+    # </editor-fold>
+
+    # <editor-fold desc="Campaign Settings Dialog">
+    def show_campaign_settings_dialog(self):
+        dialog = CampaignSettingsDialog(self.current_dir + '/.settings')
+        if dialog.exec_():  # TODO: Confirm exit without saving
+            print('OKAY')
+            dialog.save_data()
+        else:
+            print('NUK G')
     # </editor-fold>
 
     # Properties

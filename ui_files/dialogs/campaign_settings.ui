@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>Dialog</class>
- <widget class="QDialog" name="Dialog">
+ <class>CampaignSettingsDialog</class>
+ <widget class="QDialog" name="CampaignSettingsDialog">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -16,51 +16,193 @@
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
     <widget class="QTabWidget" name="tabWidget">
-     <property name="currentIndex">
-      <number>0</number>
+     <property name="tabShape">
+      <enum>QTabWidget::Rounded</enum>
      </property>
-     <widget class="QWidget" name="tabGlobals">
+     <property name="currentIndex">
+      <number>1</number>
+     </property>
+     <widget class="QWidget" name="tabStandard">
       <attribute name="title">
-       <string>Globals</string>
+       <string>Standard Variables</string>
       </attribute>
-      <layout class="QGridLayout" name="gridLayout">
-       <item row="0" column="0">
+      <layout class="QVBoxLayout" name="verticalLayout_2">
+       <item>
         <widget class="QTabWidget" name="tabWidget_2">
-         <property name="currentIndex">
-          <number>0</number>
+         <property name="tabShape">
+          <enum>QTabWidget::Rounded</enum>
          </property>
-         <widget class="QWidget" name="tabStandard">
+         <property name="currentIndex">
+          <number>1</number>
+         </property>
+         <widget class="QWidget" name="tabInit">
           <attribute name="title">
-           <string>Standard</string>
+           <string>Initialisation</string>
+          </attribute>
+          <layout class="QFormLayout" name="formLayout">
+           <item row="0" column="0">
+            <widget class="QLabel" name="label_2">
+             <property name="text">
+              <string>Starting Scenario</string>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="1">
+            <widget class="QLineEdit" name="standardStarting"/>
+           </item>
+          </layout>
+         </widget>
+         <widget class="QWidget" name="tabInventory">
+          <attribute name="title">
+           <string>Player Inventory</string>
+          </attribute>
+          <layout class="QVBoxLayout" name="verticalLayout_4">
+           <item>
+            <widget class="QFrame" name="frame">
+             <property name="frameShape">
+              <enum>QFrame::StyledPanel</enum>
+             </property>
+             <property name="frameShadow">
+              <enum>QFrame::Raised</enum>
+             </property>
+             <layout class="QFormLayout" name="formLayout_3">
+              <item row="0" column="0">
+               <widget class="QLabel" name="label_5">
+                <property name="text">
+                 <string>Starting Currency</string>
+                </property>
+               </widget>
+              </item>
+              <item row="0" column="1">
+               <widget class="QSpinBox" name="standardCurrency">
+                <property name="maximum">
+                 <number>999999999</number>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLabel" name="label_4">
+             <property name="text">
+              <string>Items</string>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignCenter</set>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QListWidget" name="standardInventoryList"/>
+           </item>
+           <item>
+            <widget class="QPushButton" name="standardInventoryAdd">
+             <property name="text">
+              <string>Add</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+         <widget class="QWidget" name="tabStats">
+          <attribute name="title">
+           <string>Player Stats</string>
           </attribute>
          </widget>
-         <widget class="QWidget" name="tabDebug">
+         <widget class="QWidget" name="tabGlobals">
           <attribute name="title">
-           <string>Debug</string>
+           <string>Globals</string>
           </attribute>
          </widget>
         </widget>
        </item>
       </layout>
      </widget>
-     <widget class="QWidget" name="tabPlayer">
+     <widget class="QWidget" name="tabDebug">
       <attribute name="title">
-       <string>Player</string>
+       <string>Debug Variables</string>
       </attribute>
-      <layout class="QGridLayout" name="gridLayout_2">
-       <item row="0" column="0">
+      <layout class="QVBoxLayout" name="verticalLayout_3">
+       <item>
         <widget class="QTabWidget" name="tabWidget_3">
          <property name="currentIndex">
-          <number>0</number>
+          <number>1</number>
          </property>
-         <widget class="QWidget" name="tabStandard">
+         <widget class="QWidget" name="tabInit">
           <attribute name="title">
-           <string>Standard</string>
+           <string>Initialisation</string>
+          </attribute>
+          <layout class="QFormLayout" name="formLayout_2">
+           <item row="0" column="0">
+            <widget class="QLabel" name="label_3">
+             <property name="text">
+              <string>Starting Scenario</string>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="1">
+            <widget class="QLineEdit" name="debugStarting"/>
+           </item>
+          </layout>
+         </widget>
+         <widget class="QWidget" name="tabInventory">
+          <attribute name="title">
+           <string>Player Inventory</string>
+          </attribute>
+          <layout class="QVBoxLayout" name="verticalLayout_5">
+           <item>
+            <widget class="QFrame" name="frame_2">
+             <property name="frameShape">
+              <enum>QFrame::StyledPanel</enum>
+             </property>
+             <property name="frameShadow">
+              <enum>QFrame::Raised</enum>
+             </property>
+             <layout class="QFormLayout" name="formLayout_4">
+              <item row="0" column="0">
+               <widget class="QLabel" name="label_7">
+                <property name="text">
+                 <string>Starting Currency</string>
+                </property>
+               </widget>
+              </item>
+              <item row="0" column="1">
+               <widget class="QSpinBox" name="debugCurrency"/>
+              </item>
+             </layout>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLabel" name="label_6">
+             <property name="text">
+              <string>Items</string>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignCenter</set>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QListWidget" name="debugInventoryList"/>
+           </item>
+           <item>
+            <widget class="QPushButton" name="debugInventoryAdd">
+             <property name="text">
+              <string>Add</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+         <widget class="QWidget" name="tabStats">
+          <attribute name="title">
+           <string>Player Stats</string>
           </attribute>
          </widget>
-         <widget class="QWidget" name="tabDebug">
+         <widget class="QWidget" name="tabGlobals">
           <attribute name="title">
-           <string>Debug</string>
+           <string>Globals</string>
           </attribute>
          </widget>
         </widget>
@@ -71,30 +213,19 @@
       <attribute name="title">
        <string>Descriptions</string>
       </attribute>
-      <layout class="QGridLayout" name="gridLayout_3">
-       <item row="0" column="0">
-        <widget class="QTabWidget" name="tabWidget_4">
-         <property name="currentIndex">
-          <number>2</number>
-         </property>
-         <widget class="QWidget" name="tabStats">
-          <attribute name="title">
-           <string>Stats</string>
-          </attribute>
-         </widget>
-         <widget class="QWidget" name="tabCurrency">
-          <attribute name="title">
-           <string>Currency</string>
-          </attribute>
-         </widget>
-         <widget class="QWidget" name="tabCommands">
-          <attribute name="title">
-           <string>Commands</string>
-          </attribute>
-         </widget>
-        </widget>
-       </item>
-      </layout>
+      <widget class="QLabel" name="label">
+       <property name="geometry">
+        <rect>
+         <x>380</x>
+         <y>250</y>
+         <width>67</width>
+         <height>17</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>WIP</string>
+       </property>
+      </widget>
      </widget>
     </widget>
    </item>
