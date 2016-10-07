@@ -1,26 +1,19 @@
-from element.ignore_enter import IgnoreEnter
 from ui.dialogs.campaign_settings import Ui_CampaignSettingsDialog
 from element.inv_row_widget import InvRow
 from PyQt5.QtWidgets import QListWidgetItem
 from misc import helper
-from element.confirm_dialog import ConfirmDialog
+from element.editor_dialog import EditorDialog
 
 
-class CampaignSettingsDialog(IgnoreEnter):
+class CampaignSettingsDialog(EditorDialog):
     def __init__(self, settings_dir):
-        super().__init__()
-        self.ui = Ui_CampaignSettingsDialog()
-        self.ui.setupUi(self)
+        super().__init__(Ui_CampaignSettingsDialog, 'Are you sure you want to exit without saving the campaign settings?')
 
         # Connections
-        self.ui.buttonBox.accepted.connect(lambda: self.done(1))
-        self.ui.buttonBox.rejected.connect(ConfirmDialog.confirm_exit(self, 'Are you sure you want to exit without saving the campaign settings?'))
         self.ui.standardInventoryAdd.clicked.connect(
-            lambda: self.add_inventory_item(self.ui.standardInventoryList, '', 1)
-        )
+            lambda: self.add_inventory_item(self.ui.standardInventoryList, '', 1))
         self.ui.debugInventoryAdd.clicked.connect(
-            lambda: self.add_inventory_item(self.ui.debugInventoryList, '', 1)
-        )
+            lambda: self.add_inventory_item(self.ui.debugInventoryList, '', 1))
         
         # Setup
         self.settings_dir = settings_dir
@@ -48,7 +41,14 @@ class CampaignSettingsDialog(IgnoreEnter):
         self.ui.debugStarting.setText(debug_player_data['scenario'])
         # TODO: Stats
         # TODO: Globals
-        
+
+        # Set up export stuff
+        export_data = helper.get_json_data(settings_dir + '/export.json')
+
+        self.ui.lineEditCampaignName.setText(export_data['name'])
+        self.ui.lineEditCreator.setText(export_data['creator'])
+        self.ui.plainTextEditAbout.setPlainText(export_data['about'])
+
 
     @staticmethod
     def add_inventory_item(inventory_list, name, count):
@@ -58,8 +58,7 @@ class CampaignSettingsDialog(IgnoreEnter):
         inventory_list.addItem(list_item)
         inventory_list.setItemWidget(list_item, inv_row)
 
-    def save_data(self):
-        # Save standard stuff
+    def save_standard(self):
         standard_start = str(self.ui.standardStarting.text())
         standard_items = {}
         for index in range(self.ui.standardInventoryList.count()):
@@ -73,8 +72,8 @@ class CampaignSettingsDialog(IgnoreEnter):
             },
             'stats': {}
         })
-        
-        # Save debug stuff
+
+    def save_debug(self):
         debug_start = str(self.ui.debugStarting.text())
         debug_items = {}
         for index in range(self.ui.debugInventoryList.count()):
@@ -88,3 +87,15 @@ class CampaignSettingsDialog(IgnoreEnter):
             },
             'stats': {}
         })
+
+    def save_export(self):
+        helper.save_json_data(self.settings_dir + '/export.json', {
+            'name': self.ui.lineEditCampaignName.text(),
+            'creator': self.ui.lineEditCreator.text(),
+            'about': self.ui.plainTextEditAbout.toPlainText()
+        })
+
+    def save_data(self):
+        self.save_standard()
+        self.save_debug()
+        self.save_export()

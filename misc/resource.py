@@ -1,4 +1,5 @@
 from misc import helper
+import config
 
 
 class ResourceInfo:
@@ -33,10 +34,6 @@ item = ResourceInfo('item', 'Items', '.item',
                         'use': '',
                         'equip': None
                     })
-
-info = ResourceInfo('info', '', '.info',
-                    {},
-                    create=False, delete=False, subfolder=False)
 
 perk = ResourceInfo('perk', 'Perks', '.perk',
                     {})
@@ -78,7 +75,6 @@ all_info = [
     enemy,
     function,
     item,
-    info,
     perk,
     res_stat,
     other_stat,
@@ -88,7 +84,7 @@ all_info = [
 ]
 # </editor-fold>
 
-folders = map(lambda r: r.folder, all_info)
+folders = list(map(lambda r: r.folder, all_info))
 
 # Yes, this is ugly. But it's the easiest way to convert from available data to other needed data.
 ext_to_name = {resource.ext: resource.name for resource in all_info}
@@ -99,7 +95,9 @@ folder_to_object = {resource.folder: resource for resource in all_info}
 ext_to_object = {resource.ext: resource for resource in all_info}
 
 
-def create_config_files(directory):
+def create_config_files(directory, campaign_name):
+    # /.settings
+    settings_dir = directory + '/.settings'
     player_data = {
         'scenario': 'start',
         'stats': {},
@@ -108,7 +106,13 @@ def create_config_files(directory):
             'items': {}
         }
     }
-    helper.save_json_data(directory + '/std/player.json', player_data)
-    helper.save_json_data(directory + '/debug/player.json', player_data)
-    helper.save_json_data(directory + '/std/globals.json', {})
-    helper.save_json_data(directory + '/debug/globals.json', {})
+    export_data = {
+        'name': campaign_name,
+        'creator': config.get('default_creator'),
+        'about': ''
+    }
+    helper.save_json_data(settings_dir + '/std/player.json', player_data)
+    helper.save_json_data(settings_dir + '/debug/player.json', player_data)
+    helper.save_json_data(settings_dir + '/std/globals.json', {})
+    helper.save_json_data(settings_dir + '/debug/globals.json', {})
+    helper.save_json_data(settings_dir + '/export.json', export_data)

@@ -11,7 +11,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_ScenarioDialog(object):
     def setupUi(self, ScenarioDialog):
         ScenarioDialog.setObjectName("ScenarioDialog")
-        ScenarioDialog.resize(400, 524)
+        ScenarioDialog.resize(460, 524)
         self.verticalLayout = QtWidgets.QVBoxLayout(ScenarioDialog)
         self.verticalLayout.setObjectName("verticalLayout")
         self.frame = QtWidgets.QFrame(ScenarioDialog)
@@ -34,10 +34,10 @@ class Ui_ScenarioDialog(object):
         self.label_3 = QtWidgets.QLabel(self.frame)
         self.label_3.setObjectName("label_3")
         self.formLayout.setWidget(1, QtWidgets.QFormLayout.LabelRole, self.label_3)
-        self.textEditDEscription = QtWidgets.QTextEdit(self.frame)
-        self.textEditDEscription.setMaximumSize(QtCore.QSize(16777215, 100))
-        self.textEditDEscription.setObjectName("textEditDEscription")
-        self.formLayout.setWidget(1, QtWidgets.QFormLayout.FieldRole, self.textEditDEscription)
+        self.textEditDescription = QtWidgets.QTextEdit(self.frame)
+        self.textEditDescription.setMaximumSize(QtCore.QSize(16777215, 100))
+        self.textEditDescription.setObjectName("textEditDescription")
+        self.formLayout.setWidget(1, QtWidgets.QFormLayout.FieldRole, self.textEditDescription)
         self.verticalLayout.addWidget(self.frame)
         self.label = QtWidgets.QLabel(ScenarioDialog)
         self.label.setAlignment(QtCore.Qt.AlignCenter)
@@ -46,6 +46,9 @@ class Ui_ScenarioDialog(object):
         self.optionList = QtWidgets.QListWidget(ScenarioDialog)
         self.optionList.setObjectName("optionList")
         self.verticalLayout.addWidget(self.optionList)
+        self.pushButtonAdd = QtWidgets.QPushButton(ScenarioDialog)
+        self.pushButtonAdd.setObjectName("pushButtonAdd")
+        self.verticalLayout.addWidget(self.pushButtonAdd)
         self.buttonBox = QtWidgets.QDialogButtonBox(ScenarioDialog)
         self.buttonBox.setOrientation(QtCore.Qt.Horizontal)
         self.buttonBox.setStandardButtons(QtWidgets.QDialogButtonBox.Cancel|QtWidgets.QDialogButtonBox.Ok)
@@ -53,8 +56,6 @@ class Ui_ScenarioDialog(object):
         self.verticalLayout.addWidget(self.buttonBox)
 
         self.retranslateUi(ScenarioDialog)
-        self.buttonBox.accepted.connect(ScenarioDialog.accept)
-        self.buttonBox.rejected.connect(ScenarioDialog.reject)
         QtCore.QMetaObject.connectSlotsByName(ScenarioDialog)
 
     def retranslateUi(self, ScenarioDialog):
@@ -63,4 +64,5 @@ class Ui_ScenarioDialog(object):
         self.label_2.setText(_translate("ScenarioDialog", "Name"))
         self.label_3.setText(_translate("ScenarioDialog", "Description"))
         self.label.setText(_translate("ScenarioDialog", "Options"))
+        self.pushButtonAdd.setText(_translate("ScenarioDialog", "Add"))
 

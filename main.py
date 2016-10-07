@@ -8,11 +8,11 @@ from ui.main_window import Ui_MainWindow
 
 from element import context_menus
 from element.about_dialog import AboutDialog
-from element.campaign_info_dialog import CampaignInfoDialog
 from element.item_dialog import ItemDialog
 from element.create_resource_dialog import CreateResourceDialog
 from element.campaign_settings_dialog import CampaignSettingsDialog
 from element.confirm_dialog import ConfirmDialog
+from element.scenario_dialog import ScenarioDialog
 
 from misc import helper, resource
 import config
@@ -42,9 +42,57 @@ class MainWindow(QMainWindow):
         # Help
         self.ui.actionAbout.triggered.connect(helper.show_simple_dialog(AboutDialog))
         # Tools
-        self.ui.actionSettings.triggered.connect(self.show_campaign_settings_dialog)
+        self.ui.actionSettings.triggered.connect(self.show_campaign_settings)
         # Buttons
         self.ui.openFolderButton.clicked.connect(self.open_current_dir)
+
+    # Actions
+    def new_campaign(self):
+        dialog = QFileDialog(self)
+        dialog.setDirectory(helper.one_up(self.current_dir))
+        dialog.setAcceptMode(QFileDialog.AcceptSave)
+        dialog.setFileMode(QFileDialog.AnyFile)
+        dialog.setOption(QFileDialog.ShowDirsOnly)
+        dialog.setWindowTitle('Select folder name')
+        if dialog.exec_():
+            directory = dialog.selectedFiles()[0]
+            qdir = QDir(directory)
+            if not qdir.exists():
+                self.current_dir = qdir.path()
+                for folder_name in resource.folders:
+                    qdir.mkpath('./' + folder_name)
+                helper.save_json_data('{}/{}/health{}'.format(self.current_dir, resource.health_stat.folder,
+                                                              resource.health_stat.ext),
+                                      resource.health_stat.default)
+                qdir.mkpath('./.settings/std')
+                qdir.mkpath('./.settings/debug')
+                resource.create_config_files(self.current_dir, qdir.dirName())
+                self.refresh_tree_view()
+            else:
+                helper.display_error('Directory for campaign already exists.')  # This shouldn't happen
+        else:
+            print('Not created.')
+
+    def open_campaign(self):
+        dialog = QFileDialog(self)
+        directory = QFileDialog.getExistingDirectory(dialog,
+                                                     caption='Select a campaign',
+                                                     directory=helper.one_up(self.current_dir),
+                                                     options=QFileDialog.ShowDirsOnly)
+        if directory:
+            self.current_dir = directory
+            self.refresh_tree_view()
+        else:
+            print('Nothing selected.')
+
+    def open_current_dir(self):
+        QDesktopServices.openUrl(QUrl(self.current_dir))
+
+    def show_campaign_settings(self):
+        try:
+            CampaignSettingsDialog(self.current_dir + '/.settings').exec_()
+        except FileNotFoundError:
+            helper.display_error('You aren\'t in campaign. You cannot change campaign settings.')
 
     # <editor-fold desc="Tree View">
     def init_tree_view(self):
@@ -62,10 +110,11 @@ class MainWindow(QMainWindow):
             self.ui.filesTreeView.hideColumn(x)  # TODO: Find a way to only have to do this once
 
     def file_edit_function(self, ext, file_location):
-        if ext == resource.info.ext:
-            return lambda: self.show_campaign_info_dialog(file_location)
-        elif ext == resource.item.ext:
-            return lambda: self.show_item_dialog(file_location)
+        # TODO: Resource dict
+        if ext == resource.item.ext:
+            return ItemDialog(file_location).exec_
+        elif ext == resource.scenario.ext:
+            return ScenarioDialog(file_location).exec_
         else:
             return lambda: helper.display_error('Operation not implemented yet.')
 
@@ -168,93 +217,6 @@ class MainWindow(QMainWindow):
                 if menu_actions:
                     menu = context_menus.build(menu_actions)
                     menu.exec_(self.ui.filesTreeView.mapToGlobal(point))
-    # </editor-fold>
-
-    # Actions
-    def new_campaign(self):
-        dialog = QFileDialog(self)
-        dialog.setDirectory(helper.one_up(self.current_dir))
-        dialog.setAcceptMode(QFileDialog.AcceptSave)
-        dialog.setFileMode(QFileDialog.AnyFile)
-        dialog.setOption(QFileDialog.ShowDirsOnly)
-        dialog.setWindowTitle('Select folder name')
-        if dialog.exec_():
-            directory = dialog.selectedFiles()[0]
-            qdir = QDir(directory)
-            if not qdir.exists():
-                name = qdir.dirName()
-                creator = config.get('default_creator')
-                campaign_info_dialog = self.init_campaign_info_dialog(name, creator, '')
-                if campaign_info_dialog.exec_():
-                    # If campaign info was OK'd, set up files
-                    self.current_dir = qdir.path()
-                    for folder_name in resource.folders:
-                        qdir.mkpath('./' + folder_name)
-                    helper.save_json_data('{}/{}/health{}'.format(self.current_dir, resource.health_stat.folder,
-                                                                  resource.health_stat.ext),
-                                          resource.health_stat.default)
-                    qdir.mkpath('./.settings/std')
-                    qdir.mkpath('./.settings/debug')
-                    resource.create_config_files(self.current_dir + '/.settings')
-                    self.save_campaign_info(campaign_info_dialog.get_data())
-                    self.refresh_tree_view()
-                else:
-                    print('Cancelled creating campaign.')
-            else:
-                helper.display_error('Directory for campaign already exists.')  # This shouldn't happen
-        else:
-            print('Not created.')
-
-    def open_campaign(self):
-        dialog = QFileDialog(self)
-        directory = QFileDialog.getExistingDirectory(dialog,
-                                                     caption='Select a campaign',
-                                                     directory=helper.one_up(self.current_dir),
-                                                     options=QFileDialog.ShowDirsOnly)
-        if directory:
-            self.current_dir = directory
-            self.refresh_tree_view()
-        else:
-            print('Nothing selected.')
-
-    def open_current_dir(self):
-        QDesktopServices.openUrl(QUrl(self.current_dir))
-
-    # <editor-fold desc="Campaign Info Dialog">
-    def init_campaign_info_dialog(self, name, creator, about):
-        dialog = CampaignInfoDialog.setup(name, creator, about)
-        return dialog
-
-    def show_campaign_info_dialog(self, file_location):
-        data = helper.get_json_data(file_location)
-        dialog = CampaignInfoDialog.setup(data['name'], data['creator'], data['about'])
-        if dialog.exec_():
-            self.save_campaign_info(dialog.get_data())
-
-    def save_campaign_info(self, campaign_info):
-        config.set('default_creator', campaign_info['creator'])
-        helper.save_json_data(self.current_dir + '/campaign.info', campaign_info)
-
-    # </editor-fold>
-
-    # <editor-fold desc="Item Dialog">
-    @staticmethod
-    def show_item_dialog(file_location):
-        dialog = ItemDialog.setup(file_location)
-        if dialog.exec_():
-            helper.save_json_data(file_location, dialog.get_data())
-
-    # </editor-fold>
-
-    # <editor-fold desc="Campaign Settings Dialog">
-    def show_campaign_settings_dialog(self):
-        dialog = CampaignSettingsDialog(self.current_dir + '/.settings')
-        if dialog.exec_():  # TODO: Confirm exit without saving
-            print('OKAY')
-            dialog.save_data()
-        else:
-            print('NUK G')
-
     # </editor-fold>
 
     # Properties
