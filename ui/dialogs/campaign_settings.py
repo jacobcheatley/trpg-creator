@@ -16,6 +16,7 @@ class Ui_CampaignSettingsDialog(object):
         self.verticalLayout.setObjectName("verticalLayout")
         self.tabWidget = QtWidgets.QTabWidget(CampaignSettingsDialog)
         self.tabWidget.setTabShape(QtWidgets.QTabWidget.Rounded)
+        self.tabWidget.setElideMode(QtCore.Qt.ElideNone)
         self.tabWidget.setObjectName("tabWidget")
         self.tabStandard = QtWidgets.QWidget()
         self.tabStandard.setObjectName("tabStandard")
@@ -237,7 +238,7 @@ class Ui_CampaignSettingsDialog(object):
         self.verticalLayout.addWidget(self.buttonBox)
 
         self.retranslateUi(CampaignSettingsDialog)
-        self.tabWidget.setCurrentIndex(3)
+        self.tabWidget.setCurrentIndex(0)
         self.tabWidget_2.setCurrentIndex(0)
         self.tabWidget_3.setCurrentIndex(0)
         QtCore.QMetaObject.connectSlotsByName(CampaignSettingsDialog)

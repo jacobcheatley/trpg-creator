@@ -20,7 +20,10 @@
       <enum>QTabWidget::Rounded</enum>
      </property>
      <property name="currentIndex">
-      <number>3</number>
+      <number>0</number>
+     </property>
+     <property name="elideMode">
+      <enum>Qt::ElideNone</enum>
      </property>
      <widget class="QWidget" name="tabStandard">
       <attribute name="title">

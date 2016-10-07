@@ -22,7 +22,7 @@ class ScenarioDialog(EditorDialog):
     def add_option(self, desc, func):
         option_list = self.ui.optionList
         list_item = QListWidgetItem(option_list)
-        option_row = OptionRow(desc, func, lambda: option_list.removeItemWidget(list_item))
+        option_row = OptionRow(desc, func, lambda: option_list.takeItem(option_list.row(list_item)))
         list_item.setSizeHint(option_row.sizeHint())
         option_list.addItem(list_item)
         option_list.setItemWidget(list_item, option_row)

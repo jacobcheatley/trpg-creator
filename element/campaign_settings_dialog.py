@@ -53,7 +53,7 @@ class CampaignSettingsDialog(EditorDialog):
     @staticmethod
     def add_inventory_item(inventory_list, name, count):
         list_item = QListWidgetItem(inventory_list)
-        inv_row = InvRow(name, count, lambda: inventory_list.removeItemWidget(list_item))
+        inv_row = InvRow(name, count, lambda: inventory_list.takeItem(inventory_list.row(list_item)))
         list_item.setSizeHint(inv_row.sizeHint())
         inventory_list.addItem(list_item)
         inventory_list.setItemWidget(list_item, inv_row)
