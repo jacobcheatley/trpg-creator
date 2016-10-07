@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>Form</class>
- <widget class="QWidget" name="Form">
+ <class>OtherStatRow</class>
+ <widget class="QWidget" name="OtherStatRow">
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>225</width>
+    <width>263</width>
     <height>65</height>
    </rect>
   </property>
@@ -53,6 +53,25 @@
        <widget class="QDoubleSpinBox" name="doubleSpinBoxStart"/>
       </item>
      </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QPushButton" name="pushButtonDelete">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>32</width>
+       <height>32</height>
+      </size>
+     </property>
+     <property name="text">
+      <string>X</string>
+     </property>
     </widget>
    </item>
   </layout>

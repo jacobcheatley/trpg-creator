@@ -8,13 +8,13 @@
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 
-class Ui_Form(object):
-    def setupUi(self, Form):
-        Form.setObjectName("Form")
-        Form.resize(225, 131)
-        self.horizontalLayout = QtWidgets.QHBoxLayout(Form)
+class Ui_ResourceStatRow(object):
+    def setupUi(self, ResourceStatRow):
+        ResourceStatRow.setObjectName("ResourceStatRow")
+        ResourceStatRow.resize(263, 131)
+        self.horizontalLayout = QtWidgets.QHBoxLayout(ResourceStatRow)
         self.horizontalLayout.setObjectName("horizontalLayout")
-        self.labelStatName = QtWidgets.QLabel(Form)
+        self.labelStatName = QtWidgets.QLabel(ResourceStatRow)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Preferred)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -22,7 +22,7 @@ class Ui_Form(object):
         self.labelStatName.setSizePolicy(sizePolicy)
         self.labelStatName.setObjectName("labelStatName")
         self.horizontalLayout.addWidget(self.labelStatName)
-        self.frame = QtWidgets.QFrame(Form)
+        self.frame = QtWidgets.QFrame(ResourceStatRow)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Preferred)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -52,15 +52,20 @@ class Ui_Form(object):
         self.doubleSpinBoxMax.setObjectName("doubleSpinBoxMax")
         self.formLayout.setWidget(2, QtWidgets.QFormLayout.FieldRole, self.doubleSpinBoxMax)
         self.horizontalLayout.addWidget(self.frame)
+        self.pushButtonDelete = QtWidgets.QPushButton(ResourceStatRow)
+        self.pushButtonDelete.setMaximumSize(QtCore.QSize(32, 32))
+        self.pushButtonDelete.setObjectName("pushButtonDelete")
+        self.horizontalLayout.addWidget(self.pushButtonDelete)
 
-        self.retranslateUi(Form)
-        QtCore.QMetaObject.connectSlotsByName(Form)
+        self.retranslateUi(ResourceStatRow)
+        QtCore.QMetaObject.connectSlotsByName(ResourceStatRow)
 
-    def retranslateUi(self, Form):
+    def retranslateUi(self, ResourceStatRow):
         _translate = QtCore.QCoreApplication.translate
-        Form.setWindowTitle(_translate("Form", "Form"))
-        self.labelStatName.setText(_translate("Form", "Stat Name"))
-        self.label_2.setText(_translate("Form", "Min"))
-        self.label_3.setText(_translate("Form", "Start"))
-        self.label_4.setText(_translate("Form", "Max"))
+        ResourceStatRow.setWindowTitle(_translate("ResourceStatRow", "Form"))
+        self.labelStatName.setText(_translate("ResourceStatRow", "Stat Name"))
+        self.label_2.setText(_translate("ResourceStatRow", "Min"))
+        self.label_3.setText(_translate("ResourceStatRow", "Start"))
+        self.label_4.setText(_translate("ResourceStatRow", "Max"))
+        self.pushButtonDelete.setText(_translate("ResourceStatRow", "X"))
 

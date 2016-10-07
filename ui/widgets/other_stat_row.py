@@ -8,13 +8,13 @@
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 
-class Ui_Form(object):
-    def setupUi(self, Form):
-        Form.setObjectName("Form")
-        Form.resize(225, 65)
-        self.horizontalLayout = QtWidgets.QHBoxLayout(Form)
+class Ui_OtherStatRow(object):
+    def setupUi(self, OtherStatRow):
+        OtherStatRow.setObjectName("OtherStatRow")
+        OtherStatRow.resize(263, 65)
+        self.horizontalLayout = QtWidgets.QHBoxLayout(OtherStatRow)
         self.horizontalLayout.setObjectName("horizontalLayout")
-        self.labelStatName = QtWidgets.QLabel(Form)
+        self.labelStatName = QtWidgets.QLabel(OtherStatRow)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Preferred)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -22,7 +22,7 @@ class Ui_Form(object):
         self.labelStatName.setSizePolicy(sizePolicy)
         self.labelStatName.setObjectName("labelStatName")
         self.horizontalLayout.addWidget(self.labelStatName)
-        self.frame = QtWidgets.QFrame(Form)
+        self.frame = QtWidgets.QFrame(OtherStatRow)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Preferred)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -40,13 +40,23 @@ class Ui_Form(object):
         self.doubleSpinBoxStart.setObjectName("doubleSpinBoxStart")
         self.formLayout.setWidget(0, QtWidgets.QFormLayout.FieldRole, self.doubleSpinBoxStart)
         self.horizontalLayout.addWidget(self.frame)
+        self.pushButtonDelete = QtWidgets.QPushButton(OtherStatRow)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Fixed)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.pushButtonDelete.sizePolicy().hasHeightForWidth())
+        self.pushButtonDelete.setSizePolicy(sizePolicy)
+        self.pushButtonDelete.setMaximumSize(QtCore.QSize(32, 32))
+        self.pushButtonDelete.setObjectName("pushButtonDelete")
+        self.horizontalLayout.addWidget(self.pushButtonDelete)
 
-        self.retranslateUi(Form)
-        QtCore.QMetaObject.connectSlotsByName(Form)
+        self.retranslateUi(OtherStatRow)
+        QtCore.QMetaObject.connectSlotsByName(OtherStatRow)
 
-    def retranslateUi(self, Form):
+    def retranslateUi(self, OtherStatRow):
         _translate = QtCore.QCoreApplication.translate
-        Form.setWindowTitle(_translate("Form", "Form"))
-        self.labelStatName.setText(_translate("Form", "Stat Name"))
-        self.label_3.setText(_translate("Form", "Start"))
+        OtherStatRow.setWindowTitle(_translate("OtherStatRow", "Form"))
+        self.labelStatName.setText(_translate("OtherStatRow", "Stat Name"))
+        self.label_3.setText(_translate("OtherStatRow", "Start"))
+        self.pushButtonDelete.setText(_translate("OtherStatRow", "X"))
 

@@ -214,9 +214,9 @@ class Ui_CampaignSettingsDialog(object):
         self.verticalLayout.addWidget(self.buttonBox)
 
         self.retranslateUi(CampaignSettingsDialog)
-        self.tabWidget.setCurrentIndex(1)
-        self.tabWidget_2.setCurrentIndex(2)
-        self.tabWidget_3.setCurrentIndex(2)
+        self.tabWidget.setCurrentIndex(0)
+        self.tabWidget_2.setCurrentIndex(0)
+        self.tabWidget_3.setCurrentIndex(0)
         QtCore.QMetaObject.connectSlotsByName(CampaignSettingsDialog)
 
     def retranslateUi(self, CampaignSettingsDialog):

@@ -11,7 +11,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_InvRow(object):
     def setupUi(self, InvRow):
         InvRow.setObjectName("InvRow")
-        InvRow.resize(400, 45)
+        InvRow.resize(229, 45)
         self.horizontalLayout = QtWidgets.QHBoxLayout(InvRow)
         self.horizontalLayout.setObjectName("horizontalLayout")
         self.lineEditItemName = QtWidgets.QLineEdit(InvRow)
@@ -23,6 +23,7 @@ class Ui_InvRow(object):
         self.spinBoxItemCount.setObjectName("spinBoxItemCount")
         self.horizontalLayout.addWidget(self.spinBoxItemCount)
         self.pushButtonDelete = QtWidgets.QPushButton(InvRow)
+        self.pushButtonDelete.setMaximumSize(QtCore.QSize(32, 32))
         self.pushButtonDelete.setObjectName("pushButtonDelete")
         self.horizontalLayout.addWidget(self.pushButtonDelete)
 
@@ -32,5 +33,5 @@ class Ui_InvRow(object):
     def retranslateUi(self, InvRow):
         _translate = QtCore.QCoreApplication.translate
         InvRow.setWindowTitle(_translate("InvRow", "Form"))
-        self.pushButtonDelete.setText(_translate("InvRow", "Delete"))
+        self.pushButtonDelete.setText(_translate("InvRow", "X"))
 
