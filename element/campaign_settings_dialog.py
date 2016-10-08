@@ -25,25 +25,15 @@ class CampaignSettingsDialog(EditorDialog):
         standard_player_data = helper.get_json_data(settings_dir + '/std/player.json')
         standard_globals_data = helper.get_json_data(settings_dir + '/std/globals.json')
 
-        for name, count in standard_player_data['inventory']['items'].items():
-            self.add_inventory_item(self.ui.standardInventoryList, name, count)
-        self.ui.standardCurrency.setValue(standard_player_data['inventory']['currency'])
-        self.ui.standardStarting.setText(standard_player_data['scenario'])
-        for name, value in standard_globals_data.items():
-            self.add_global_var(self.ui.standardGlobalsList, name, value)
-        # TODO: Stats
+        self.init_player_data(standard_player_data, self.ui.standardInventoryList, self.ui.standardCurrency, self.ui.standardStarting)
+        self.init_globals_data(standard_globals_data, self.ui.standardGlobalsList)
 
         # Set up debug stuff
         debug_player_data = helper.get_json_data(settings_dir + '/debug/player.json')
         debug_globals_data = helper.get_json_data(settings_dir + '/debug/globals.json')
 
-        for name, count in debug_player_data['inventory']['items'].items():
-            self.add_inventory_item(self.ui.debugInventoryList, name, count)
-        self.ui.debugCurrency.setValue(debug_player_data['inventory']['currency'])
-        self.ui.debugStarting.setText(debug_player_data['scenario'])
-        for name, value in debug_globals_data.items():
-            self.add_global_var(self.ui.debugGlobalsList, name, value)
-        # TODO: Stats
+        self.init_player_data(debug_player_data, self.ui.debugInventoryList, self.ui.debugCurrency, self.ui.debugStarting)
+        self.init_globals_data(debug_globals_data, self.ui.debugGlobalsList)
 
         # Set up export stuff
         export_data = helper.get_json_data(settings_dir + '/export.json')
@@ -51,6 +41,19 @@ class CampaignSettingsDialog(EditorDialog):
         self.ui.lineEditCampaignName.setText(export_data['name'])
         self.ui.lineEditCreator.setText(export_data['creator'])
         self.ui.plainTextEditAbout.setPlainText(export_data['about'])
+
+    def init_player_data(self, player_data, inventory_list, currency, starting):
+        # Starting Scenario
+        starting.setText(player_data['scenario'])
+        # Items
+        for name, count in player_data['inventory']['items'].items():
+            self.add_inventory_item(inventory_list, name, count)
+        # Currency
+        currency.setValue(player_data['inventory']['currency'])
+
+    def init_globals_data(self, globals_data, globals_list):
+        for name, value in globals_data.items():
+            self.add_global_var(globals_list, name, value)
 
     @staticmethod
     def add_inventory_item(inventory_list, name, count):
