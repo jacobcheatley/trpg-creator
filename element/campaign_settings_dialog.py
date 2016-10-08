@@ -22,8 +22,6 @@ class CampaignSettingsDialog(EditorDialog):
         standard_player_data = helper.get_json_data(settings_dir + '/std/player.json')
         standard_globals_data = helper.get_json_data(settings_dir + '/std/globals.json')
 
-        print(standard_player_data['inventory'])
-
         for name, count in standard_player_data['inventory']['items'].items():
             self.add_inventory_item(self.ui.standardInventoryList, name, count)
         self.ui.standardCurrency.setValue(standard_player_data['inventory']['currency'])
