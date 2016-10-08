@@ -12,9 +12,36 @@ class GlobalRow(QWidget):
         self.wid.comboBoxType.currentIndexChanged.connect(self.set_wid_type)
         self.wid.lineEditName.setText(name)
         self.init_combo_box(value)
+        self.set_value(value)
+
+    def get_data(self):
+        return self.wid.lineEditName.text(), self.get_value()
+
+    def get_value(self):
+        value_widget = self.wid.frameValue.layout().itemAt(0).widget()
+        index = self.wid.comboBoxType.currentIndex()
+        if index in (0, 1):
+            return value_widget.value()
+        elif index == 2:
+            return value_widget.text()
+        elif index == 3:
+            return value_widget.isChecked()
+        else:
+            return None  # This shouldn't happen
+
+    def set_value(self, value):
+        value_widget = self.wid.frameValue.layout().itemAt(0).widget()
+        index = self.wid.comboBoxType.currentIndex()
+        if index in (0, 1):
+            value_widget.setValue(value)
+        elif index == 2:
+            return value_widget.setText(value)
+        elif index == 3:
+            return value_widget.setChecked(value)
+        else:
+            return None  # This shouldn't happen
 
     def init_combo_box(self, value):
-        print(value, type(value))
         if isinstance(value, int):
             self.wid.comboBoxType.setCurrentIndex(0)
         elif isinstance(value, float):
@@ -57,6 +84,6 @@ if __name__ == "__main__":
     import sys
 
     app = QApplication(sys.argv)
-    test = GlobalRow('test', 1, lambda: print('X'))
+    test = GlobalRow('test', 1, lambda: print(test.get_data()))
     test.show()
     sys.exit(app.exec_())
