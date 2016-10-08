@@ -14,8 +14,8 @@ class GlobalRow(QWidget):
         self.init_combo_box(value)
         self.set_value(value)
 
-    def get_data(self):
-        return self.wid.lineEditName.text(), self.get_value()
+    def get_name(self):
+        return self.wid.lineEditName.text()
 
     def get_value(self):
         value_widget = self.wid.frameValue.layout().itemAt(0).widget()

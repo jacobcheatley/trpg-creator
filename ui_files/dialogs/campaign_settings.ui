@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>885</width>
-    <height>630</height>
+    <height>645</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -177,6 +177,18 @@
           <attribute name="title">
            <string>Globals</string>
           </attribute>
+          <layout class="QVBoxLayout" name="verticalLayout_8">
+           <item>
+            <widget class="QListWidget" name="standardGlobalsList"/>
+           </item>
+           <item>
+            <widget class="QPushButton" name="standardGlobalsAdd">
+             <property name="text">
+              <string>Add</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
          </widget>
         </widget>
        </item>
@@ -327,6 +339,18 @@
           <attribute name="title">
            <string>Globals</string>
           </attribute>
+          <layout class="QVBoxLayout" name="verticalLayout_9">
+           <item>
+            <widget class="QListWidget" name="debugGlobalsList"/>
+           </item>
+           <item>
+            <widget class="QPushButton" name="debugGlobalsAdd">
+             <property name="text">
+              <string>Add</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
          </widget>
         </widget>
        </item>
