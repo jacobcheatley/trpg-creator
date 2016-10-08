@@ -54,8 +54,8 @@ other_stat = ResourceInfo('other stat', 'Stats-Other', '.othr',
 
 health_stat = ResourceInfo('health stat', 'Stats-Health', '.hlth',
                            {
-                               'name': 'health',
-                               'desc': 'Health'
+                               'name': 'Health',
+                               'desc': 'Health is what keeps you alive.'
                            },
                            create=False, delete=False, subfolder=False)
 

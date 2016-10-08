@@ -13,6 +13,7 @@ from element.create_resource_dialog import CreateResourceDialog
 from element.campaign_settings_dialog import CampaignSettingsDialog
 from element.confirm_dialog import ConfirmDialog
 from element.scenario_dialog import ScenarioDialog
+from element.stat_dialog import StatDialog
 
 from misc import helper, resource
 import config
@@ -115,6 +116,8 @@ class MainWindow(QMainWindow):
             return ItemDialog(file_location).exec_
         elif ext == resource.scenario.ext:
             return ScenarioDialog(file_location).exec_
+        elif ext in (resource.health_stat.ext, resource.res_stat.ext, resource.other_stat.ext):
+            return StatDialog(file_location).exec_
         else:
             return lambda: helper.display_error('Operation not implemented yet.')
 
