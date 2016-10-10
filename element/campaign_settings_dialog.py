@@ -4,6 +4,9 @@ from element.global_row_widget import GlobalRow
 from PyQt5.QtWidgets import QListWidgetItem
 from misc import helper
 from element.editor_dialog import EditorDialog
+from element.other_stat_row_widget import OtherStatRow
+from element.resource_stat_row_widget import ResourceStatRow
+import os
 
 
 class CampaignSettingsDialog(EditorDialog):
@@ -22,34 +25,81 @@ class CampaignSettingsDialog(EditorDialog):
         self.settings_dir = settings_dir
 
         # Set up standard stuff
-        standard_player_data = helper.get_json_data(settings_dir + '/std/player.json')
-        standard_globals_data = helper.get_json_data(settings_dir + '/std/globals.json')
+        standard_player_data = helper.get_json_data(self.settings_dir + '/std/player.json')
+        standard_globals_data = helper.get_json_data(self.settings_dir + '/std/globals.json')
 
-        self.init_player_data(standard_player_data, self.ui.standardInventoryList, self.ui.standardCurrency, self.ui.standardStarting)
+        self.init_player_data(standard_player_data,
+                              self.ui.standardInventoryList,
+                              self.ui.standardCurrency,
+                              self.ui.standardStarting,
+                              self.ui.standardResourceList,
+                              self.ui.standardOtherList,
+                              self.ui.standardHealthStart,
+                              self.ui.standardHealthMax)
         self.init_globals_data(standard_globals_data, self.ui.standardGlobalsList)
 
         # Set up debug stuff
-        debug_player_data = helper.get_json_data(settings_dir + '/debug/player.json')
-        debug_globals_data = helper.get_json_data(settings_dir + '/debug/globals.json')
+        debug_player_data = helper.get_json_data(self.settings_dir + '/debug/player.json')
+        debug_globals_data = helper.get_json_data(self.settings_dir + '/debug/globals.json')
 
-        self.init_player_data(debug_player_data, self.ui.debugInventoryList, self.ui.debugCurrency, self.ui.debugStarting)
+        self.init_player_data(debug_player_data,
+                              self.ui.debugInventoryList,
+                              self.ui.debugCurrency,
+                              self.ui.debugStarting,
+                              self.ui.debugResourceList,
+                              self.ui.debugOtherList,
+                              self.ui.debugHealthStart,
+                              self.ui.debugHealthMax)
         self.init_globals_data(debug_globals_data, self.ui.debugGlobalsList)
 
         # Set up export stuff
-        export_data = helper.get_json_data(settings_dir + '/export.json')
+        export_data = helper.get_json_data(self.settings_dir + '/export.json')
 
         self.ui.lineEditCampaignName.setText(export_data['name'])
         self.ui.lineEditCreator.setText(export_data['creator'])
         self.ui.plainTextEditAbout.setPlainText(export_data['about'])
 
-    def init_player_data(self, player_data, inventory_list, currency, starting):
+    def init_player_data(self, player_data, inventory_list, currency, starting, resource_stat_list, other_stat_list, health_start, health_max):
         # Starting Scenario
         starting.setText(player_data['scenario'])
+
         # Items
         for name, count in player_data['inventory']['items'].items():
             self.add_inventory_item(inventory_list, name, count)
+
         # Currency
         currency.setValue(player_data['inventory']['currency'])
+
+        # Stats
+        stat_data = player_data['stats']
+        base_dir = helper.one_up(self.settings_dir)
+
+        # Health Stat
+        if 'current' in stat_data['health']:
+            health_start.setValue(stat_data['health']['current'])
+        else:
+            health_start.setValue(0)
+        if 'max' in stat_data['health']:
+            health_max.setValue(stat_data['health']['max'])
+        else:
+            health_max.setValue(0)
+
+        # Other stat
+        for filename in os.listdir(base_dir + '/Stats-Other'):
+            stat_id = os.path.splitext(filename)[0]
+            if stat_id in stat_data['other']:
+                self.add_widget_to_list(other_stat_list, OtherStatRow(stat_id, stat_data['other'][stat_id]['current']))
+            else:
+                self.add_widget_to_list(other_stat_list, OtherStatRow(stat_id, 0))
+
+        # Resource stat
+        for filename in os.listdir(base_dir + '/Stats-Resource'):
+            stat_id = os.path.splitext(filename)[0]
+            if stat_id in player_data['stats']['resource']:
+                resource_data = stat_data['resource'][stat_id]
+                self.add_widget_to_list(resource_stat_list, ResourceStatRow(stat_id, resource_data['min'], resource_data['max'], resource_data['current']))
+            else:
+                self.add_widget_to_list(resource_stat_list, ResourceStatRow(stat_id, 0, 0, 0))
 
     def init_globals_data(self, globals_data, globals_list):
         for name, value in globals_data.items():
@@ -71,22 +121,57 @@ class CampaignSettingsDialog(EditorDialog):
         globals_list.addItem(list_item)
         globals_list.setItemWidget(list_item, global_row)
 
-    def save_standard(self):
-        # Init
-        standard_start = str(self.ui.standardStarting.text())
+    @staticmethod
+    def add_widget_to_list(widget_list, object):
+        list_item = QListWidgetItem(widget_list)
+        list_item.setSizeHint(object.sizeHint())
+        widget_list.addItem(list_item)
+        widget_list.setItemWidget(list_item, object)
+
+    @staticmethod
+    def save_player_data(file_location, starting, inventory_list, currency, other_list, resource_list, health_max, health_start):
+        start = starting.text()
         # Inventory
-        standard_items = {}
-        for index in range(self.ui.standardInventoryList.count()):
-            item = self.ui.standardInventoryList.itemWidget(self.ui.standardInventoryList.item(index))
-            standard_items[item.get_name()] = item.get_count()
-        helper.save_json_data(self.settings_dir + '/std/player.json', {
-            'scenario': standard_start,
+        items = {}
+        for index in range(inventory_list.count()):
+            item = inventory_list.itemWidget(inventory_list.item(index))
+            items[item.get_name()] = item.get_count()
+        # Stats
+        health_info = {'min': 0, 'max': health_max.value(), 'current': health_start.value()}
+
+        other_stats = {}
+        for index in range(other_list.count()):
+            stat = other_list.itemWidget(other_list.item(index))
+            other_stats[stat.stat_id] = stat.get_data()
+
+        resource_stats = {}
+        for index in range(resource_list.count()):
+            stat = resource_list.itemWidget(resource_list.item(index))
+            resource_stats[stat.stat_id] = stat.get_data()
+
+        # Final player save
+        helper.save_json_data(file_location, {
+            'scenario': start,
             'inventory': {
-                'currency': self.ui.standardCurrency.value(),
-                'items': standard_items
+                'currency': currency.value(),
+                'items': items
             },
-            'stats': {}
+            'stats': {
+                'health': health_info,
+                'other': other_stats,
+                'resource': resource_stats
+            }
         })
+
+    def save_standard(self):
+        self.save_player_data(self.settings_dir + '/std/player.json',
+                              self.ui.standardStarting,
+                              self.ui.standardInventoryList,
+                              self.ui.standardCurrency,
+                              self.ui.standardOtherList,
+                              self.ui.standardResourceList,
+                              self.ui.standardHealthMax,
+                              self.ui.standardHealthStart)
         # Globals
         standard_globals = {}
         for index in range(self.ui.standardGlobalsList.count()):
@@ -95,21 +180,14 @@ class CampaignSettingsDialog(EditorDialog):
         helper.save_json_data(self.settings_dir + '/std/globals.json', standard_globals)
 
     def save_debug(self):
-        # Init
-        debug_start = str(self.ui.debugStarting.text())
-        # Inventory
-        debug_items = {}
-        for index in range(self.ui.debugInventoryList.count()):
-            item = self.ui.debugInventoryList.itemWidget(self.ui.debugInventoryList.item(index))
-            debug_items[item.get_name()] = item.get_count()
-        helper.save_json_data(self.settings_dir + '/debug/player.json', {
-            'scenario': debug_start,
-            'inventory': {
-                'currency': self.ui.debugCurrency.value(),
-                'items': debug_items
-            },
-            'stats': {}
-        })
+        self.save_player_data(self.settings_dir + '/debug/player.json',
+                              self.ui.debugStarting,
+                              self.ui.debugInventoryList,
+                              self.ui.debugCurrency,
+                              self.ui.debugOtherList,
+                              self.ui.debugResourceList,
+                              self.ui.debugHealthMax,
+                              self.ui.debugHealthStart)
         # Globals
         debug_globals = {}
         for index in range(self.ui.debugGlobalsList.count()):

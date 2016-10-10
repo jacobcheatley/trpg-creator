@@ -100,7 +100,11 @@ def create_config_files(directory, campaign_name):
     settings_dir = directory + '/.settings'
     player_data = {
         'scenario': 'start',
-        'stats': {},
+        'stats': {
+            'health': {},
+            'resource': {},
+            'other': {}
+        },
         'inventory': {
             'currency': 0,
             'items': {}
