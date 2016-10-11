@@ -45,6 +45,10 @@ class Ui_OptionRow(object):
         sizePolicy.setHeightForWidth(self.plainTextEditFunction.sizePolicy().hasHeightForWidth())
         self.plainTextEditFunction.setSizePolicy(sizePolicy)
         self.plainTextEditFunction.setMaximumSize(QtCore.QSize(16777215, 40))
+        self.plainTextEditFunction.setStyleSheet("* {\n"
+"    font-family: monospace;\n"
+"}")
+        self.plainTextEditFunction.setTabStopWidth(36)
         self.plainTextEditFunction.setObjectName("plainTextEditFunction")
         self.formLayout.setWidget(1, QtWidgets.QFormLayout.FieldRole, self.plainTextEditFunction)
         self.horizontalLayout.addWidget(self.frame)

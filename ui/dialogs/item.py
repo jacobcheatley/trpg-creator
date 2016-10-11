@@ -49,6 +49,10 @@ class Ui_ItemDialog(object):
         self.label_4.setObjectName("label_4")
         self.formLayout.setWidget(3, QtWidgets.QFormLayout.LabelRole, self.label_4)
         self.textEditUse = QtWidgets.QPlainTextEdit(self.verticalLayoutWidget)
+        self.textEditUse.setStyleSheet("* {\n"
+"    font-family: monospace;\n"
+"}")
+        self.textEditUse.setTabStopWidth(36)
         self.textEditUse.setObjectName("textEditUse")
         self.formLayout.setWidget(3, QtWidgets.QFormLayout.FieldRole, self.textEditUse)
         self.lineEditName = QtWidgets.QLineEdit(self.verticalLayoutWidget)

@@ -15,6 +15,13 @@ class Ui_FunctionDialog(object):
         self.verticalLayout = QtWidgets.QVBoxLayout(FunctionDialog)
         self.verticalLayout.setObjectName("verticalLayout")
         self.plainTextEditFunc = QtWidgets.QPlainTextEdit(FunctionDialog)
+        self.plainTextEditFunc.setAutoFillBackground(False)
+        self.plainTextEditFunc.setStyleSheet("* {\n"
+"    font-family: monospace;\n"
+"}")
+        self.plainTextEditFunc.setLineWidth(1)
+        self.plainTextEditFunc.setSizeAdjustPolicy(QtWidgets.QAbstractScrollArea.AdjustIgnored)
+        self.plainTextEditFunc.setTabStopWidth(36)
         self.plainTextEditFunc.setObjectName("plainTextEditFunc")
         self.verticalLayout.addWidget(self.plainTextEditFunc)
         self.buttonBox = QtWidgets.QDialogButtonBox(FunctionDialog)

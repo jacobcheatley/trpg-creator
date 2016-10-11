@@ -90,6 +90,14 @@
           <height>40</height>
          </size>
         </property>
+        <property name="styleSheet">
+         <string notr="true">* {
+	font-family: monospace;
+}</string>
+        </property>
+        <property name="tabStopWidth">
+         <number>36</number>
+        </property>
        </widget>
       </item>
      </layout>
