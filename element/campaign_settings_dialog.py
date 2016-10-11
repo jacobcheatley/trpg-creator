@@ -87,19 +87,21 @@ class CampaignSettingsDialog(EditorDialog):
         # Other stat
         for filename in os.listdir(base_dir + '/Stats-Other'):
             stat_id = os.path.splitext(filename)[0]
+            stat_name = helper.get_json_data(base_dir + '/Stats-Other/' + filename)['name']
             if stat_id in stat_data['other']:
-                self.add_widget_to_list(other_stat_list, OtherStatRow(stat_id, stat_data['other'][stat_id]['current']))
+                self.add_widget_to_list(other_stat_list, OtherStatRow(stat_name, stat_id, stat_data['other'][stat_id]['current']))
             else:
-                self.add_widget_to_list(other_stat_list, OtherStatRow(stat_id, 0))
+                self.add_widget_to_list(other_stat_list, OtherStatRow(stat_name, stat_id, 0))
 
         # Resource stat
         for filename in os.listdir(base_dir + '/Stats-Resource'):
             stat_id = os.path.splitext(filename)[0]
+            stat_name = helper.get_json_data(base_dir + '/Stats-Resource/' + filename)['name']
             if stat_id in player_data['stats']['resource']:
                 resource_data = stat_data['resource'][stat_id]
-                self.add_widget_to_list(resource_stat_list, ResourceStatRow(stat_id, resource_data['min'], resource_data['max'], resource_data['current']))
+                self.add_widget_to_list(resource_stat_list, ResourceStatRow(stat_name, stat_id, resource_data['min'], resource_data['max'], resource_data['current']))
             else:
-                self.add_widget_to_list(resource_stat_list, ResourceStatRow(stat_id, 0, 0, 0))
+                self.add_widget_to_list(resource_stat_list, ResourceStatRow(stat_name, stat_id, 0, 0, 0))
 
     def init_globals_data(self, globals_data, globals_list):
         for name, value in globals_data.items():

@@ -92,7 +92,7 @@ class MainWindow(QMainWindow):
     def show_campaign_settings(self):
         try:
             CampaignSettingsDialog(self.current_dir + '/.settings').exec_()
-        except FileNotFoundError:
+        except FileNotFoundError as e:
             helper.display_error('You aren\'t in campaign. You cannot change campaign settings.')
 
     # <editor-fold desc="Tree View">
