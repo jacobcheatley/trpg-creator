@@ -16,7 +16,7 @@ from element.scenario_dialog import ScenarioDialog
 from element.stat_dialog import StatDialog
 from element.function_dialog import FunctionDialog
 
-from misc import helper, resource
+from misc import helper, resource, export
 import config
 
 
@@ -40,6 +40,7 @@ class MainWindow(QMainWindow):
         self.ui.actionNew.triggered.connect(self.new_campaign)
         self.ui.actionOpen.triggered.connect(self.open_campaign)
         self.ui.actionQuit.triggered.connect(helper.exit_app)
+        self.ui.actionToFile.triggered.connect(self.export_to_file)
         # Help
         self.ui.actionAbout.triggered.connect(helper.show_simple_dialog(AboutDialog))
         # Tools
@@ -81,6 +82,16 @@ class MainWindow(QMainWindow):
         if directory:
             self.current_dir = directory
             self.refresh_tree_view()
+
+    def export_to_file(self):
+        dialog = QFileDialog(self)
+        file_location = QFileDialog.getSaveFileName(dialog,
+                                                caption='Export campaign file',
+                                                directory=self.current_dir,
+                                                filter='*.trpg')[0]
+        file_location = file_location.split('.')[0] + '.trpg'
+        if file_location:
+            export.export_to_file(self.current_dir, file_location)
 
     def open_current_dir(self):
         QDesktopServices.openUrl(QUrl(self.current_dir))
@@ -183,12 +194,15 @@ class MainWindow(QMainWindow):
                 menu_actions = [
                     ('Edit ' + name, self.file_edit_function(ext, self.model.filePath(index)))
                 ]
-                resource_object = resource.ext_to_object[ext]
-                if resource_object.delete:
-                    menu_actions.append(
-                        ('Delete ' + name, self.file_delete_function(self.model.filePath(index))))
-                menu = context_menus.build(menu_actions)
-                menu.exec_(self.ui.filesTreeView.mapToGlobal(point))
+                try:
+                    resource_object = resource.ext_to_object[ext]
+                    if resource_object.delete:
+                        menu_actions.append(
+                            ('Delete ' + name, self.file_delete_function(self.model.filePath(index))))
+                    menu = context_menus.build(menu_actions)
+                    menu.exec_(self.ui.filesTreeView.mapToGlobal(point))
+                except KeyError:
+                    helper.display_error('Operation not supported.')
             else:
                 # It's a folder
                 start_index = index
