@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'ui_files/dialogs/campaign_settings.ui'
 #
-# Created by: PyQt5 UI code generator 5.5.1
+# Created by: PyQt5 UI code generator 5.7
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -21,6 +21,7 @@ class Ui_CampaignSettingsDialog(object):
         self.tabStandard = QtWidgets.QWidget()
         self.tabStandard.setObjectName("tabStandard")
         self.verticalLayout_2 = QtWidgets.QVBoxLayout(self.tabStandard)
+        self.verticalLayout_2.setContentsMargins(0, 0, 0, 0)
         self.verticalLayout_2.setObjectName("verticalLayout_2")
         self.tabWidget_2 = QtWidgets.QTabWidget(self.tabStandard)
         self.tabWidget_2.setTabShape(QtWidgets.QTabWidget.Rounded)
@@ -28,6 +29,7 @@ class Ui_CampaignSettingsDialog(object):
         self.tabInit = QtWidgets.QWidget()
         self.tabInit.setObjectName("tabInit")
         self.formLayout = QtWidgets.QFormLayout(self.tabInit)
+        self.formLayout.setContentsMargins(0, 0, 0, 0)
         self.formLayout.setObjectName("formLayout")
         self.label_2 = QtWidgets.QLabel(self.tabInit)
         self.label_2.setObjectName("label_2")
@@ -39,6 +41,7 @@ class Ui_CampaignSettingsDialog(object):
         self.tabInventory = QtWidgets.QWidget()
         self.tabInventory.setObjectName("tabInventory")
         self.verticalLayout_4 = QtWidgets.QVBoxLayout(self.tabInventory)
+        self.verticalLayout_4.setContentsMargins(0, 0, 0, 0)
         self.verticalLayout_4.setObjectName("verticalLayout_4")
         self.frame = QtWidgets.QFrame(self.tabInventory)
         self.frame.setFrameShape(QtWidgets.QFrame.StyledPanel)
@@ -68,6 +71,7 @@ class Ui_CampaignSettingsDialog(object):
         self.tabStats = QtWidgets.QWidget()
         self.tabStats.setObjectName("tabStats")
         self.verticalLayout_6 = QtWidgets.QVBoxLayout(self.tabStats)
+        self.verticalLayout_6.setContentsMargins(0, 0, 0, 0)
         self.verticalLayout_6.setObjectName("verticalLayout_6")
         self.label_8 = QtWidgets.QLabel(self.tabStats)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Minimum)
@@ -149,6 +153,7 @@ class Ui_CampaignSettingsDialog(object):
         self.tabGlobals = QtWidgets.QWidget()
         self.tabGlobals.setObjectName("tabGlobals")
         self.verticalLayout_8 = QtWidgets.QVBoxLayout(self.tabGlobals)
+        self.verticalLayout_8.setContentsMargins(0, 0, 0, 0)
         self.verticalLayout_8.setObjectName("verticalLayout_8")
         self.standardGlobalsList = QtWidgets.QListWidget(self.tabGlobals)
         self.standardGlobalsList.setObjectName("standardGlobalsList")
@@ -162,12 +167,14 @@ class Ui_CampaignSettingsDialog(object):
         self.tabDebug = QtWidgets.QWidget()
         self.tabDebug.setObjectName("tabDebug")
         self.verticalLayout_3 = QtWidgets.QVBoxLayout(self.tabDebug)
+        self.verticalLayout_3.setContentsMargins(0, 0, 0, 0)
         self.verticalLayout_3.setObjectName("verticalLayout_3")
         self.tabWidget_3 = QtWidgets.QTabWidget(self.tabDebug)
         self.tabWidget_3.setObjectName("tabWidget_3")
         self.tabInit1 = QtWidgets.QWidget()
         self.tabInit1.setObjectName("tabInit1")
         self.formLayout_2 = QtWidgets.QFormLayout(self.tabInit1)
+        self.formLayout_2.setContentsMargins(0, 0, 0, 0)
         self.formLayout_2.setObjectName("formLayout_2")
         self.label_3 = QtWidgets.QLabel(self.tabInit1)
         self.label_3.setObjectName("label_3")
@@ -179,6 +186,7 @@ class Ui_CampaignSettingsDialog(object):
         self.tabInventory1 = QtWidgets.QWidget()
         self.tabInventory1.setObjectName("tabInventory1")
         self.verticalLayout_5 = QtWidgets.QVBoxLayout(self.tabInventory1)
+        self.verticalLayout_5.setContentsMargins(0, 0, 0, 0)
         self.verticalLayout_5.setObjectName("verticalLayout_5")
         self.frame_2 = QtWidgets.QFrame(self.tabInventory1)
         self.frame_2.setFrameShape(QtWidgets.QFrame.StyledPanel)
@@ -207,6 +215,7 @@ class Ui_CampaignSettingsDialog(object):
         self.tabStats1 = QtWidgets.QWidget()
         self.tabStats1.setObjectName("tabStats1")
         self.verticalLayout_7 = QtWidgets.QVBoxLayout(self.tabStats1)
+        self.verticalLayout_7.setContentsMargins(0, 0, 0, 0)
         self.verticalLayout_7.setObjectName("verticalLayout_7")
         self.label_11 = QtWidgets.QLabel(self.tabStats1)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Minimum)
@@ -288,6 +297,7 @@ class Ui_CampaignSettingsDialog(object):
         self.tabGlobals1 = QtWidgets.QWidget()
         self.tabGlobals1.setObjectName("tabGlobals1")
         self.verticalLayout_9 = QtWidgets.QVBoxLayout(self.tabGlobals1)
+        self.verticalLayout_9.setContentsMargins(0, 0, 0, 0)
         self.verticalLayout_9.setObjectName("verticalLayout_9")
         self.debugGlobalsList = QtWidgets.QListWidget(self.tabGlobals1)
         self.debugGlobalsList.setObjectName("debugGlobalsList")
@@ -307,6 +317,7 @@ class Ui_CampaignSettingsDialog(object):
         self.tabExport = QtWidgets.QWidget()
         self.tabExport.setObjectName("tabExport")
         self.formLayout_5 = QtWidgets.QFormLayout(self.tabExport)
+        self.formLayout_5.setContentsMargins(0, 0, 0, 0)
         self.formLayout_5.setObjectName("formLayout_5")
         self.label_14 = QtWidgets.QLabel(self.tabExport)
         self.label_14.setObjectName("label_14")

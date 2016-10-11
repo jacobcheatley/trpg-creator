@@ -14,6 +14,7 @@ from element.campaign_settings_dialog import CampaignSettingsDialog
 from element.confirm_dialog import ConfirmDialog
 from element.scenario_dialog import ScenarioDialog
 from element.stat_dialog import StatDialog
+from element.function_dialog import FunctionDialog
 
 from misc import helper, resource
 import config
@@ -33,7 +34,6 @@ class MainWindow(QMainWindow):
         self.model = QFileSystemModel()
         self.init_tree_view()
         self.connect_actions()
-        print(self.current_dir)
 
     def connect_actions(self):
         # File
@@ -71,8 +71,6 @@ class MainWindow(QMainWindow):
                 self.refresh_tree_view()
             else:
                 helper.display_error('Directory for campaign already exists.')  # This shouldn't happen
-        else:
-            print('Not created.')
 
     def open_campaign(self):
         dialog = QFileDialog(self)
@@ -83,8 +81,6 @@ class MainWindow(QMainWindow):
         if directory:
             self.current_dir = directory
             self.refresh_tree_view()
-        else:
-            print('Nothing selected.')
 
     def open_current_dir(self):
         QDesktopServices.openUrl(QUrl(self.current_dir))
@@ -118,6 +114,8 @@ class MainWindow(QMainWindow):
             return ScenarioDialog(file_location).exec_
         elif ext in (resource.health_stat.ext, resource.res_stat.ext, resource.other_stat.ext):
             return StatDialog(file_location).exec_
+        elif ext == resource.function.ext:
+            return FunctionDialog(file_location).exec_
         else:
             return lambda: helper.display_error('Operation not implemented yet.')
 
@@ -130,8 +128,6 @@ class MainWindow(QMainWindow):
             if new_id is not None and new_id.strip() != '':
                 helper.save_json_data(file_location + '/' + new_id + resource.folder_to_ext[base_folder],
                                       resource.name_to_default[resource_type])
-            else:
-                print('Resource creation cancelled')
 
         # TODO: Additional/better checks here for duplicate files
         return create_resource
@@ -151,8 +147,6 @@ class MainWindow(QMainWindow):
             if new_id is not None and new_id.strip() != '':
                 qdir = QDir(folder_location)
                 qdir.mkpath('./' + new_id)
-            else:
-                print('Resource creation cancelled')
 
         # TODO: Additional/better checks here for duplicate folders
         return create_folder
