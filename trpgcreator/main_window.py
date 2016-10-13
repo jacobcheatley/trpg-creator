@@ -15,6 +15,7 @@ from .element.confirm_dialog import ConfirmDialog
 from .element.scenario_dialog import ScenarioDialog
 from .element.stat_dialog import StatDialog
 from .element.function_dialog import FunctionDialog
+from .element.console_dialog import ConsoleDialog
 
 from .misc import helper, resource, export
 from . import config
@@ -41,6 +42,8 @@ class MainWindow(QMainWindow):
         self.ui.actionOpen.triggered.connect(self.open_campaign)
         self.ui.actionQuit.triggered.connect(helper.exit_app)
         self.ui.actionToFile.triggered.connect(self.export_to_file)
+        # Run
+        self.ui.actionStandard.triggered.connect(self.test_standard)
         # Help
         self.ui.actionAbout.triggered.connect(helper.show_simple_dialog(AboutDialog))
         # Tools
@@ -92,6 +95,13 @@ class MainWindow(QMainWindow):
         file_location = file_location.split('.')[0] + '.trpg'
         if file_location:
             export.export_to_file(self.current_dir, file_location)
+
+    def test_standard(self):
+        qdir = QDir(self.current_dir)
+        qdir.mkpath('./.run')
+        file_location = self.current_dir + '/.run/std.trpg'
+        export.export_to_file(self.current_dir, file_location)
+        dialog = ConsoleDialog(file_location).exec_()
 
     def open_current_dir(self):
         QDesktopServices.openUrl(QUrl(self.current_dir))
