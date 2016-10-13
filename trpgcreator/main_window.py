@@ -1,6 +1,6 @@
 import os
 
-from PyQt5.QtCore import QDir, QUrl, QFile
+from PyQt5.QtCore import QDir, QUrl, QFile, Qt
 from PyQt5.QtGui import QDesktopServices
 from PyQt5.QtWidgets import QMainWindow, QFileDialog, QFileSystemModel
 
@@ -34,6 +34,7 @@ class MainWindow(QMainWindow):
         self.setWindowTitle('TRPG Creator - [{}]'.format(self.current_dir))
         self.model = QFileSystemModel()
         self.init_tree_view()
+        self.ui.filesFrame.resize(500, self.ui.filesFrame.height())
         self.connect_actions()
 
     def connect_actions(self):
@@ -50,6 +51,39 @@ class MainWindow(QMainWindow):
         self.ui.actionSettings.triggered.connect(self.show_campaign_settings)
         # Buttons
         self.ui.openFolderButton.clicked.connect(self.open_current_dir)
+
+    # Overrides
+    def keyPressEvent(self, QKeyEvent):
+        key = QKeyEvent.key()
+        index = self.ui.filesTreeView.currentIndex()
+
+        if index.isValid():
+            item_name = self.model.itemData(index)[0]
+            if key in (Qt.Key_Return, Qt.Key_Enter):
+                if '.' in item_name:
+                    # It's a file. Edit it.
+                    name, ext = os.path.splitext(item_name)
+                    self.file_edit_function(ext, self.model.filePath(index))()
+                else:
+                    # It's a directory. Expand it.
+                    self.ui.filesTreeView.expand(index)
+            elif key == Qt.Key_Delete:
+                if '.' in item_name:
+                    # It's a file. Try to delete it.
+                    try:
+                        name, ext = os.path.splitext(item_name)
+                        resource_object = resource.ext_to_object[ext]
+                        if resource_object.delete:
+                            self.file_delete_function(self.model.filePath(index))()
+                    except KeyError:
+                        helper.display_error('Operation not supported.')
+                else:
+                    # It's a folder. Try to delete it.
+                    if item_name not in resource.folder_to_name:
+                        # Make sure it's not a root director
+                        self.folder_delete_function(self.model.filePath(index))()
+    
+        super().keyPressEvent(QKeyEvent)
 
     # Actions
     def new_campaign(self):

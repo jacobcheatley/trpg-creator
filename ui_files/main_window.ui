@@ -31,7 +31,7 @@
       </property>
       <widget class="QFrame" name="filesFrame">
        <property name="sizePolicy">
-        <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+        <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
          <horstretch>0</horstretch>
          <verstretch>0</verstretch>
         </sizepolicy>
@@ -44,7 +44,7 @@
        </property>
        <property name="maximumSize">
         <size>
-         <width>300</width>
+         <width>1000</width>
          <height>16777215</height>
         </size>
        </property>
@@ -140,7 +140,7 @@
          <rect>
           <x>0</x>
           <y>0</y>
-          <width>418</width>
+          <width>76</width>
           <height>584</height>
          </rect>
         </property>
