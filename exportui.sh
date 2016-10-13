@@ -1,5 +1,5 @@
 ui_folder=ui_files
-output=ui
+output=trpgcreator/ui
 
 export_file() {
     file=$1;
